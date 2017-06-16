@@ -3,15 +3,27 @@ package com.uestcpg.remotedoctor.activitys.start;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.activitys.main.MainActivity;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.app.BaseActivity;
+import com.uestcpg.remotedoctor.network.OkHttpCallBack;
+import com.uestcpg.remotedoctor.network.OkHttpManager;
+
+import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,7 +61,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         ButterKnife.inject(this);
         mLoginBtn.setOnClickListener(this);
     }
-
     private void checkLogin(){
         String pwd = mPasswordEdit.getText().toString();
         String phone = mPhoneEdit.getText().toString();

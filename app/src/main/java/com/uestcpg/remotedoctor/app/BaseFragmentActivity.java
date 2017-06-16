@@ -18,16 +18,18 @@ public class BaseFragmentActivity extends FragmentActivity {
 
     protected TextView mLeftTv,mCenterTv,mRightTv;
     protected ImageView mLeftIm,mRightIm;
+    private BaseApplication mApplication = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        BaseApplication.addActivity(this);
+        mApplication = BaseApplication.getInstance();
+        mApplication.addFragmentActivity(this);
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        BaseApplication.removeActivity(this);
+        mApplication.removeFragmentActivity(this);
     }
     //初始化标题
     protected void initTitle(){
