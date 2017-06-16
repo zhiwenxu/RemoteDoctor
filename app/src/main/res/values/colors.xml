@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">@color/app_common_color_green</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <color name="app_transparent">@android:color/transparent</color>
+    <color name="app_white">#ffffff</color>
+    <color name="app_common_color_green">#4CAF79</color>
+    <color name="app_common_color_green_light">#4CEE79</color>
+    <color name="app_edit_border_color_gray">#E7E7E7</color>
+    <color name="text_color_gray">#9E9E9E</color>
+    <color name="divider_color">#DBDBDB</color>
+
+
+</resources>
