@@ -7,6 +7,7 @@
 
 
     <color name="app_transparent">@android:color/transparent</color>
+    <color name="app_half_transparent">#80000000</color>
     <color name="app_white">#ffffff</color>
     <color name="app_common_color_green">#4CAF79</color>
     <color name="app_common_color_green_light">#4CEE79</color>
