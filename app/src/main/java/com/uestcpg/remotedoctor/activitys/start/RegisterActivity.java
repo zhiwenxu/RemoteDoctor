@@ -38,6 +38,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @InjectView(R.id.register_phone)
     EditText rPhoneEdit;
 
+    String pwd = rPasswordEdit.getText().toString();
+    String phone = rPhoneEdit.getText().toString();
+    String name = rNameEdit.getText().toString();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,65 +53,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         rRegisterBtn.setOnClickListener(this);
 
     }
-    private void checkLogin(){
-        String pwd = mPasswordEdit.getText().toString();
-        String phone = mPhoneEdit.getText().toString();
-        if(!pwd.equals("123456")){
-            Toast.makeText(this,"账号或密码错误",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(!phone.equals(id1) && !phone.equals(id2)){
-            Toast.makeText(this,"账号或密码错误",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(phone.equals(id1)){
-            setAppStatus(Token1,id1,id2);
-            connect(Token1);
-        }else{
-            setAppStatus(Token2,id2,id1);
-            connect(Token2);
-        }
-    }
 
-    private void setAppStatus(String token,String id1,String id2){
-        AppStatus.setTagetId(id2);
-        AppStatus.setToken(token);
-        AppStatus.setUserId(id1);
-        AppStatus.setUsername(id1);
-    }
-
-    private void connect(String token) {
-
-        RongIM.connect(token, new RongIMClient.ConnectCallback() {
-            /**
-             * Token 错误。可以从下面两点检查 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
-             *                  2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
-             */
-            @Override
-            public void onTokenIncorrect() {
-
-            }
-            /**
-             * 连接融云成功
-             * @param userid 当前 token 对应的用户 id
-             */
-            @Override
-            public void onSuccess(String userid) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-
-            /**
-             * 连接融云失败
-             * @param errorCode 错误码，可到官网 查看错误码对应的注释
-             */
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-
-            }
-        });
-    }
 
     private void Register(){
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
@@ -116,7 +62,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
     @Override
     public void onClick(View v) {
-        if(v= rRegisterBtn){
+        if(v == rRegisterBtn){
             Register();
         }
     }
