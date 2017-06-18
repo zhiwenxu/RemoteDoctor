@@ -17,6 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activitys.start.RegisterActivity">
+        </activity>
         <activity android:name=".activitys.main.MainActivity"></activity>
         <activity android:name=".activitys.main.ConversationActivity">
             <intent-filter>

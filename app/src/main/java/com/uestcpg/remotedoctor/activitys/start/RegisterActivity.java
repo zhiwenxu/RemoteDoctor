@@ -3,15 +3,23 @@ package com.uestcpg.remotedoctor.activitys.start;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Request;
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.activitys.main.MainActivity;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.app.BaseActivity;
+import com.uestcpg.remotedoctor.network.OkHttpCallBack;
+import com.uestcpg.remotedoctor.network.OkHttpManager;
+import com.uestcpg.remotedoctor.utils.MD5Util;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -23,11 +31,7 @@ import io.rong.imlib.RongIMClient;
  */
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener{
-    public static final String Token1 = "D4tAyYbSy0+RNfvmPjwk0H5S8BrvE5BcWVpMTzvyoQNRMSNrTJmkI+A3tRftYXOKxvW9g3fCFy//hJn7hCOg3Npw2ALKUrh6";
-    public static final String Token2 = "twAqWo17/NEvWFdbFTEz635S8BrvE5BcWVpMTzvyoQNRMSNrTJmkI2vPDSzN4KLcRuyesJSoYYXGVBFJTQVu3A==";
 
-    public static final String id1 = "xuzhiwen";
-    public static final String id2 = "xiaoyu";
 
     @InjectView(R.id.register_btn)
     Button rRegisterBtn;
@@ -38,9 +42,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @InjectView(R.id.register_phone)
     EditText rPhoneEdit;
 
-    String pwd = rPasswordEdit.getText().toString();
-    String phone = rPhoneEdit.getText().toString();
-    String name = rNameEdit.getText().toString();
+
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,8 +58,30 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-
     private void Register(){
+
+        String pwd = MD5Util.stringMD5(rPasswordEdit.getText().toString());
+        String phone = rPhoneEdit.getText().toString();
+        String name = rNameEdit.getText().toString();
+        JSONObject object = new JSONObject();
+        try {
+            object.put("phone",phone);
+            object.put("password",pwd);
+            object.put("name",name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        OkHttpManager.getInstance()._postAsyn("http://doctor.xiaopeng.site:808/api/Register", "=" + object.toString(), new OkHttpCallBack() {
+            @Override
+            public void onRespone(String result) {
+                Log.e("resit",result);
+            }
+            @Override
+            public void onError(Request request, Exception e) {
+                ///
+            }
+        });
+
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();

@@ -22,6 +22,10 @@ import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.app.BaseActivity;
 import com.uestcpg.remotedoctor.network.OkHttpCallBack;
 import com.uestcpg.remotedoctor.network.OkHttpManager;
+import com.uestcpg.remotedoctor.utils.MD5Util;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -66,8 +70,27 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     }
     private void checkLogin(){
-        String pwd = mPasswordEdit.getText().toString();
+        String pwd = MD5Util.stringMD5(mPasswordEdit.getText().toString());
         String phone = mPhoneEdit.getText().toString();
+
+        JSONObject object = new JSONObject();
+        try {
+            object.put("phone",phone);
+            object.put("password",pwd);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        OkHttpManager.getInstance()._postAsyn("http://doctor.xiaopeng.site:808/api/Login", "=" + object.toString(), new OkHttpCallBack() {
+            @Override
+            public void onRespone(String result) {
+                Log.e("resit",result);
+            }
+            @Override
+            public void onError(Request request, Exception e) {
+                ///
+            }
+        });
+
         if(!pwd.equals("123456")){
             Toast.makeText(this,"账号或密码错误",Toast.LENGTH_SHORT).show();
             return;
