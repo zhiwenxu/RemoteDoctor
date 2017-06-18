@@ -55,7 +55,7 @@
                 android:textSize="12sp"
                 android:layout_marginTop="2dp"
                 android:textColor="@color/text_color_gray"
-                android:text="@string/home_tab_friends"/>
+                android:text="@string/home_tab_doctor"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/tab_me"

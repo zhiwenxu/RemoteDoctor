@@ -3,27 +3,15 @@ package com.uestcpg.remotedoctor.activitys.start;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.activitys.main.MainActivity;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.app.BaseActivity;
-import com.uestcpg.remotedoctor.network.OkHttpCallBack;
-import com.uestcpg.remotedoctor.network.OkHttpManager;
-
-import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -31,38 +19,34 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
 /**
- * Created by xuzhiwen on 2017/6/14.
- * 登录页面
+ * Created by POPLX on 2017/6/18.
  */
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
-
-
+public class RegisterActivity extends BaseActivity implements View.OnClickListener{
     public static final String Token1 = "D4tAyYbSy0+RNfvmPjwk0H5S8BrvE5BcWVpMTzvyoQNRMSNrTJmkI+A3tRftYXOKxvW9g3fCFy//hJn7hCOg3Npw2ALKUrh6";
     public static final String Token2 = "twAqWo17/NEvWFdbFTEz635S8BrvE5BcWVpMTzvyoQNRMSNrTJmkI2vPDSzN4KLcRuyesJSoYYXGVBFJTQVu3A==";
 
     public static final String id1 = "xuzhiwen";
     public static final String id2 = "xiaoyu";
 
-    @InjectView(R.id.login_btn)
-    Button mLoginBtn;
-    @InjectView(R.id.login_register_btn)
-    Button mLoginRegisterBtn;
-    @InjectView(R.id.login_phone)
-    EditText mPhoneEdit;
-    @InjectView(R.id.login_password)
-    EditText mPasswordEdit;
+    @InjectView(R.id.register_btn)
+    Button rRegisterBtn;
+    @InjectView(R.id.register_name)
+    EditText rNameEdit;
+    @InjectView(R.id.register_password)
+    EditText rPasswordEdit;
+    @InjectView(R.id.register_phone)
+    EditText rPhoneEdit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
         init();
     }
     private void init(){
         ButterKnife.inject(this);
-        mLoginBtn.setOnClickListener(this);
-        mLoginRegisterBtn.setOnClickListener(this);
+        rRegisterBtn.setOnClickListener(this);
 
     }
     private void checkLogin(){
@@ -126,15 +110,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void Register(){
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
-            finish();
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
     @Override
     public void onClick(View v) {
-        if(v == mLoginBtn){
-            checkLogin();
-        }else if(v == mLoginRegisterBtn){
+        if(v= rRegisterBtn){
             Register();
         }
     }
