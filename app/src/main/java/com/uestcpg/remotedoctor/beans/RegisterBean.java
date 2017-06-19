@@ -6,14 +6,14 @@ package com.uestcpg.remotedoctor.beans;
 
 public class RegisterBean {
 
-    private boolean Success;
+    private String Success;
     private String Message;
 
-    public boolean isSuccess() {
+    public String isSuccess() {
         return Success;
     }
 
-    public void setSuccess(boolean success) {
+    public void setSuccess(String success) {
         Success = success;
     }
 

@@ -61,7 +61,8 @@
         android:layout_height="45dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/register_now"
         android:textColor="@color/app_white"
-        android:background="@color/rc_voice_color"/>
+        android:background="@drawable/green_btn_bg"/>
 </LinearLayout>
