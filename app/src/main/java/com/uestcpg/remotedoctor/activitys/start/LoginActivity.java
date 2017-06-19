@@ -24,10 +24,13 @@ import com.uestcpg.remotedoctor.network.OkHttpCallBack;
 import com.uestcpg.remotedoctor.network.OkHttpManager;
 import com.uestcpg.remotedoctor.utils.MD5Util;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -69,27 +72,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         mLoginRegisterBtn.setOnClickListener(this);
 
     }
-   //jiexi
-    public static List<PatientClass> getPersons(String key, String jsonString) {
-        List<PatientClass> list = new ArrayList<person>();
-        try {
-            JSONObject jsonObject = new JSONObject(jsonString);
-            // 返回json的数组
-            JSONArray jsonArray = jsonObject.getJSONArray(key);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject2 = jsonArray.getJSONObject(i);
-                Person person = new Person();
-                person.setId(jsonObject2.getInt("id"));
-                person.setName(jsonObject2.getString("name"));
-                person.setAddress(jsonObject2.getString("address"));
-                list.add(person);
-            }
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-        return list;
-    }
-
     private void checkLogin(){
         String pwd = MD5Util.stringMD5(mPasswordEdit.getText().toString());
         String phone = mPhoneEdit.getText().toString();
