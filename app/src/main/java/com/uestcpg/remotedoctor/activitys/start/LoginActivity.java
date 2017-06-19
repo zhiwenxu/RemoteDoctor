@@ -69,7 +69,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         mLoginRegisterBtn.setOnClickListener(this);
 
     }
-
+   //jiexi
     public static List<PatientClass> getPersons(String key, String jsonString) {
         List<PatientClass> list = new ArrayList<person>();
         try {
