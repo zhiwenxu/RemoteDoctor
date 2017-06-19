@@ -9,11 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.activitys.main.MainActivity;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.app.BaseActivity;
+import com.uestcpg.remotedoctor.beans.RegisterBean;
+import com.uestcpg.remotedoctor.network.GsonHelper;
 import com.uestcpg.remotedoctor.network.OkHttpCallBack;
 import com.uestcpg.remotedoctor.network.OkHttpManager;
 import com.uestcpg.remotedoctor.utils.MD5Util;
@@ -43,9 +46,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     EditText rPhoneEdit;
 
 
-
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +55,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private void init(){
         ButterKnife.inject(this);
         rRegisterBtn.setOnClickListener(this);
-
     }
 
     private void Register(){
@@ -75,17 +74,16 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         OkHttpManager.getInstance()._postAsyn("http://doctor.xiaopeng.site:808/api/Register", "=" + object.toString(), new OkHttpCallBack() {
             @Override
             public void onRespone(String result) {
-                Log.e("resit",result);
+                RegisterBean bean = GsonHelper.getGson().fromJson(result,RegisterBean.class);
+                Toast.makeText(RegisterActivity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
+                finish();
             }
             @Override
             public void onError(Request request, Exception e) {
-                ///
+                e.printStackTrace();
             }
         });
 
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
     }
     @Override
     public void onClick(View v) {
