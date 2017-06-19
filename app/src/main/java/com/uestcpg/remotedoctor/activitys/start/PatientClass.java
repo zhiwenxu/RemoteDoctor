@@ -24,6 +24,7 @@ public class PatientClass {
     }
 
     public String getPassword() {
+
         return password;
     }
     public void setPassword(String password) {

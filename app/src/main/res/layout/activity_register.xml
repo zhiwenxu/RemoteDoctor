@@ -47,6 +47,7 @@
         android:paddingRight="5dp"
         android:textSize="14sp"
         android:hint="@string/password"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

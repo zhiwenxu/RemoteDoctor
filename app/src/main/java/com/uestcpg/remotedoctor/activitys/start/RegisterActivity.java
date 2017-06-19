@@ -69,6 +69,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             object.put("password",pwd);
             object.put("name",name);
         } catch (JSONException e) {
+
             e.printStackTrace();
         }
         OkHttpManager.getInstance()._postAsyn("http://doctor.xiaopeng.site:808/api/Register", "=" + object.toString(), new OkHttpCallBack() {
