@@ -66,6 +66,7 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
                 //动态数组与ListItem对应的子项
                 new String[] {"ItemTitle", "ItemText"},
 
+
                 //ListItem的XML文件里面的两个TextView ID
                 new int[] {R.id.ItemTitle,R.id.ItemText});
         //添加并且显示
