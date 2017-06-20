@@ -86,15 +86,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             public void onRespone(String result) {
                 LoginBean bean = GsonHelper.getGson().fromJson(result,LoginBean.class);
                 if(StringUtil.isTrue(bean.getSuccess())){
-                    if(phone.equals(id1)){
-                        setAppStatus(bean.getToken(),id1,id2);
-                    }
-                    else{
-                        setAppStatus(bean.getToken(),id2,id1);
-                    }
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+//                    if(phone.equals(id1)){
+//                        setAppStatus(bean.getToken(),id1,id2);
+//                    }
+//                    else{
+//                        setAppStatus(bean.getToken(),id2,id1);
+//                    }
                 }
-                Log.e("t",bean.getToken());
-                connect(bean.getToken());
+//                connect(bean.getToken());
             }
             @Override
             public void onError(Request request, Exception e) {
@@ -127,9 +129,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
              */
             @Override
             public void onSuccess(String userid) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+
             }
 
             /**
