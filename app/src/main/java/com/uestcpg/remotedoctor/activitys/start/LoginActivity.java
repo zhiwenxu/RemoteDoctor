@@ -93,11 +93,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                         setAppStatus(bean.getToken(),id2,id1);
                     }
                 }
+                Log.e("t",bean.getToken());
                 connect(bean.getToken());
             }
             @Override
             public void onError(Request request, Exception e) {
-                ///
+                e.printStackTrace();
             }
         });
     }

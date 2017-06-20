@@ -16,10 +16,13 @@ import com.uestcpg.remotedoctor.activitys.main.MainActivity;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.app.BaseActivity;
 import com.uestcpg.remotedoctor.beans.RegisterBean;
+import com.uestcpg.remotedoctor.network.APPUrl;
 import com.uestcpg.remotedoctor.network.GsonHelper;
 import com.uestcpg.remotedoctor.network.OkHttpCallBack;
 import com.uestcpg.remotedoctor.network.OkHttpManager;
 import com.uestcpg.remotedoctor.utils.MD5Util;
+import com.uestcpg.remotedoctor.utils.ParamUtil;
+import com.uestcpg.remotedoctor.utils.StringUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,16 +65,19 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         String pwd = MD5Util.stringMD5(rPasswordEdit.getText().toString());
         String phone = rPhoneEdit.getText().toString();
         String name = rNameEdit.getText().toString();
-        JSONObject object = new JSONObject();
-        try {
-            object.put("phone",phone);
-            object.put("password",pwd);
-            object.put("name",name);
-        } catch (JSONException e) {
+        String isDoctor = "0";
 
-            e.printStackTrace();
+        if(StringUtil.isEmpty(phone)){
+            //zhe   ge  pan duan    shifou  wei  kong
         }
-        OkHttpManager.getInstance()._postAsyn("http://doctor.xiaopeng.site:808/api/Register", "=" + object.toString(), new OkHttpCallBack() {
+
+        ParamUtil.put("phone",phone);
+        ParamUtil.put("password",pwd);
+        ParamUtil.put("name",name);
+        ParamUtil.put("doctor",isDoctor);//
+
+        OkHttpManager.getInstance()._postAsyn(APPUrl.REGISTER_URL,ParamUtil.getParams()
+                , new OkHttpCallBack() {
             @Override
             public void onRespone(String result) {
                 RegisterBean bean = GsonHelper.getGson().fromJson(result,RegisterBean.class);

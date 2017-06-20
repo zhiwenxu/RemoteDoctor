@@ -21,6 +21,7 @@
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/friends_icon"
             android:layout_centerVertical="true"/>
+
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
