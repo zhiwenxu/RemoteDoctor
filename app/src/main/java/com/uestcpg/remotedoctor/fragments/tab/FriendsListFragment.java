@@ -7,11 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.app.AppStatus;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -41,9 +46,8 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
         ButterKnife.inject(this,contentView);
 
         //new
-
         //绑定XML中的ListView，作为Item的容器
-        ListView list = (ListView) findViewById(R.id.MyListView);
+        ListView list = (ListView) contentView.findViewById(R.id.MyListView);
 
         //生成动态数组，并且转载数据
         ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
@@ -55,7 +59,7 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
             mylist.add(map);
         }
         //生成适配器，数组===》ListItem
-        SimpleAdapter mSchedule = new SimpleAdapter(this, //没什么解释
+        SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), //没什么解释
                 mylist,//数据来源
                 R.layout.list_item,//ListItem的XML实现
 
