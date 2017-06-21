@@ -2,6 +2,8 @@ package com.uestcpg.remotedoctor.beans;
 
 import com.uestcpg.remotedoctor.Class.Doctor;
 
+import java.util.List;
+
 /**
  * Created by poplx on 2017/6/21.
  */
