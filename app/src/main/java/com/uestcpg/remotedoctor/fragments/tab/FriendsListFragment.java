@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -45,6 +46,12 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
         View contentView = inflater.inflate(R.layout.fragment_friends,null);
         ButterKnife.inject(this,contentView);
 
+        String Doctor_photo="http://net.120askimages.com/ztc_kw/face/63/6cc3a4adfe1b28e1877ca651c5601123.jpg";
+        String Doctor_name="李时珍";
+        String Doctor_appellation="主任医师";
+        String Doctor_major="医药作家";
+        String Advisory="咨询";
+
         //new
         //绑定XML中的ListView，作为Item的容器
         ListView list = (ListView) contentView.findViewById(R.id.MyListView);
@@ -54,21 +61,24 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
         for(int i=0;i<30;i++)
         {
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("ItemTitle", "This is Title.....");
-            map.put("ItemText", "This is text.....");
+            map.put("doctor_photo", Doctor_photo);
+            map.put("doctor_name", Doctor_name);
+            map.put("doctor_major", Doctor_major);
+            map.put("doctor_appellation", Doctor_appellation);
+            map.put("advisory", Advisory);
             mylist.add(map);
         }
         //生成适配器，数组===》ListItem
-        SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), //没什么解释
+        BaseAdapter mSchedule = new BaseAdapter(getActivity(), //没什么解释
                 mylist,//数据来源
                 R.layout.list_item,//ListItem的XML实现
 
                 //动态数组与ListItem对应的子项
-                new String[] {"ItemTitle", "ItemText"},
+                new String[] {"doctor_photo", "doctor_name","doctor_appellation","doctor_major","advisory"},
 
 
                 //ListItem的XML文件里面的两个TextView ID
-                new int[] {R.id.ItemTitle,R.id.ItemText});
+                new int[] {R.id.doctor_photo,R.id.doctor_name,R.id.doctor_appellation,R.id.doctor_major,R.advisory});
         //添加并且显示
         list.setAdapter(mSchedule);
 
