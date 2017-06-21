@@ -4,22 +4,24 @@ import com.uestcpg.remotedoctor.Class.Doctor;
 
 import java.util.List;
 
+
 /**
  * Created by poplx on 2017/6/21.
+ * 获取医生信息bean
  */
 
 public class DoctorBean {
-    private String Count;
+    private String count;
     private String Success;
     private String Message;
     private List<Doctor> doctors ;
 
     public String getCount() {
-        return Count;
+        return count;
     }
 
     public void setCount(String count) {
-        Count = count;
+        count = count;
     }
 
     public String getSuccess() {

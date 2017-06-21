@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.app.BaseFragmentActivity;
-import com.uestcpg.remotedoctor.fragments.tab.FriendsListFragment;
+import com.uestcpg.remotedoctor.fragments.tab.DoctorListFragment;
 import com.uestcpg.remotedoctor.fragments.tab.MeFragment;
 
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewPager.OnPa
 
     private FragmentManager fm;
     private FragmentTransaction ft;
-    private FriendsListFragment friendsListFragment;
+    private DoctorListFragment friendsListFragment;
     private MeFragment meFragment;
     private ConversationListFragment mConversationListFragment;
     private List<Fragment> mFragments = new ArrayList<>();
@@ -81,7 +81,7 @@ public class MainActivity extends BaseFragmentActivity implements ViewPager.OnPa
 
         fm = getSupportFragmentManager();
         mConversationListFragment = (ConversationListFragment) initConversationList();
-        friendsListFragment = FriendsListFragment.getInstance();
+        friendsListFragment = DoctorListFragment.getInstance();
         meFragment = MeFragment.getInstance();
         mFragments.add(mConversationListFragment);
         mFragments.add(friendsListFragment);

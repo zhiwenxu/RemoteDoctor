@@ -2,52 +2,53 @@ package com.uestcpg.remotedoctor.Class;
 
 /**
  * Created by poplx on 2017/6/21.
+ * 医生个人基础信息
  */
 
 public class Doctor {
-    private String Phone;
-    private String Name;
-    private String Photo;
-    private String Appellation;
-    private String Major;
+    private String phone;
+    private String name;
+    private String photo;
+    private String appellation;
+    private String major;
 
     public String getPhone() {
-        return Phone;
+        return phone;
     }
 
     public void setPhone(String phone) {
-        Phone = phone;
+        this.phone = phone;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getPhoto() {
-        return Photo;
+        return photo;
     }
 
     public void setPhoto(String photo) {
-        Photo = photo;
+        this.photo = photo;
     }
 
     public String getAppellation() {
-        return Appellation;
+        return appellation;
     }
 
     public void setAppellation(String appellation) {
-        Appellation = appellation;
+        this.appellation = appellation;
     }
 
     public String getMajor() {
-        return Major;
+        return major;
     }
 
     public void setMajor(String major) {
-        Major = major;
+        this.major = major;
     }
 }
