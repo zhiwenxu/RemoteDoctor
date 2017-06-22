@@ -12,6 +12,13 @@ import com.uestcpg.remotedoctor.Class.Doctor;
  */
 
 public class DoctorListAdapter extends BaseAdapter{
+    private LayoutInflater mInflater = null;
+    private MyAdapter(Context context)
+    {
+        //根据context上下文加载布局，这里的是Demo17Activity本身，即this
+        this.mInflater = LayoutInflater.from(context);
+    }
+
     @Override
     public int getCount() {
         return 0;
