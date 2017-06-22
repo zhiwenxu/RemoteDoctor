@@ -28,12 +28,12 @@ public class DoctorListAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int i, View convertView, ViewGroup viewGroup) {
         Doctor holder = null;
         //如果缓存convertView为空，则需要创建View
         if(convertView == null)
         {
-            holder = new ViewHolder();
+            holder = new Doctor();
             //根据自定义的Item布局加载布局
             convertView = mInflater.inflate(R.layout.list_item, null);
             holder.img = (ImageView)convertView.findViewById(R.id.img);
