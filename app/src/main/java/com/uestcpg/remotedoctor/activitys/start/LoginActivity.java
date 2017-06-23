@@ -3,37 +3,24 @@ package com.uestcpg.remotedoctor.activitys.start;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.activitys.main.MainActivity;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.app.BaseActivity;
 import com.uestcpg.remotedoctor.beans.LoginBean;
+import com.uestcpg.remotedoctor.network.APPUrl;
 import com.uestcpg.remotedoctor.network.GsonHelper;
 import com.uestcpg.remotedoctor.network.OkHttpCallBack;
 import com.uestcpg.remotedoctor.network.OkHttpManager;
 import com.uestcpg.remotedoctor.utils.MD5Util;
+import com.uestcpg.remotedoctor.utils.ParamUtil;
 import com.uestcpg.remotedoctor.utils.StringUtil;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.uestcpg.remotedoctor.utils.T;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -46,9 +33,6 @@ import io.rong.imlib.RongIMClient;
  */
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener{
-
-    public static final String id1 = "15160098905";
-    public static final String id2 = "15160098906";
 
     @InjectView(R.id.login_btn)
     Button mLoginBtn;
@@ -69,47 +53,41 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         ButterKnife.inject(this);
         mLoginBtn.setOnClickListener(this);
         mLoginRegisterBtn.setOnClickListener(this);
-
     }
     private void checkLogin(){
-        String pwd = MD5Util.stringMD5(mPasswordEdit.getText().toString());
-        final String phone = mPhoneEdit.getText().toString();
-        JSONObject object = new JSONObject();
-        try {
-            object.put("phone",phone);
-            object.put("password",pwd);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        String pwd = mPasswordEdit.getText().toString();
+        String phone = mPhoneEdit.getText().toString();
+        if(StringUtil.isEmpty(phone)){
+            T.show(this,getString(R.string.account_null_tip));
+            return;
         }
-        OkHttpManager.getInstance()._postAsyn("http://doctor.xiaopeng.site:808/api/Login", "=" + object.toString(), new OkHttpCallBack() {
+        if(StringUtil.isEmpty(pwd)){
+            T.show(this,getString(R.string.pwd_null_tip));
+            return;
+        }
+        String pwdMD5 = MD5Util.stringMD5(pwd);
+        ParamUtil.put("phone",phone);
+        ParamUtil.put("password",pwdMD5);
+        OkHttpManager.getInstance()._postAsyn(APPUrl.LOGIN_URL,ParamUtil.getParams(), new OkHttpCallBack() {
             @Override
             public void onRespone(String result) {
                 LoginBean bean = GsonHelper.getGson().fromJson(result,LoginBean.class);
                 if(StringUtil.isTrue(bean.getSuccess())){
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    AppStatus.setToken(bean.getToken());
                     startActivity(intent);
                     finish();
-//                    if(phone.equals(id1)){
-//                        setAppStatus(bean.getToken(),id1,id2);
-//                    }
-//                    else{
-//                        setAppStatus(bean.getToken(),id2,id1);
-//                    }
                 }
-//                connect(bean.getToken());
+                else{
+                    T.show(LoginActivity.this,getString(R.string.account_pwd_null_tip));
+                }
+                connect(bean.getToken());
             }
             @Override
             public void onError(Request request, Exception e) {
-                e.printStackTrace();
+
             }
         });
-    }
-
-    private void setAppStatus(String token,String id1,String id2){
-        AppStatus.setTagetId(id2);
-        AppStatus.setToken(token);
-        AppStatus.setUserId(id1);
-        AppStatus.setUsername(id1);
     }
 
     private void connect(String token) {
@@ -129,7 +107,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
              */
             @Override
             public void onSuccess(String userid) {
-
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
 
             /**
@@ -144,8 +124,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void Register(){
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(intent);
     }
     @Override
     public void onClick(View v) {

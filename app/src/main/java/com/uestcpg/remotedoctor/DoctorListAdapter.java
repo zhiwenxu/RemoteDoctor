@@ -1,10 +1,20 @@
 package com.uestcpg.remotedoctor;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.uestcpg.remotedoctor.Class.Doctor;
+import com.uestcpg.remotedoctor.utils.T;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -12,16 +22,29 @@ import com.uestcpg.remotedoctor.Class.Doctor;
  */
 
 public class DoctorListAdapter extends BaseAdapter{
-    private LayoutInflater mInflater = null;
-    private MyAdapter(Context context)
-    {
-        //根据context上下文加载布局，这里的是Demo17Activity本身，即this
-        this.mInflater = LayoutInflater.from(context);
+
+    private Context mContext;
+    private List<Doctor> doctors;
+
+    public DoctorListAdapter(Context context,List<Doctor> datas) {
+        this.mContext = context;
+        doctors = new ArrayList<>();
+        doctors.addAll(datas);
+    }
+    //添加所有数据
+    public void addDatas(List<Doctor> datas){
+        doctors.addAll(datas);
+        notifyDataSetChanged();
+    }
+    //添加单一数据
+    public void addData(Doctor doctor){
+        doctors.add(doctor);
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return doctors.size();
     }
 
     @Override
@@ -36,26 +59,37 @@ public class DoctorListAdapter extends BaseAdapter{
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-        Doctor holder = null;
-        //如果缓存convertView为空，则需要创建View
-        if(convertView == null)
-        {
-            holder = new Doctor();
-            //根据自定义的Item布局加载布局
-            convertView = mInflater.inflate(R.layout.list_item, null);
-            holder.img = (ImageView)convertView.findViewById(R.id.img);
-            holder.title = (TextView)convertView.findViewById(R.id.tv);
-            holder.info = (TextView)convertView.findViewById(R.id.info);
-            //将设置好的布局保存到缓存中，并将其设置在Tag里，以便后面方便取出Tag
+        ViewHolder holder = null;
+        Doctor doctor = doctors.get(i);
+        if(convertView == null){
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.doctor_list_item,null);
+            holder = new ViewHolder();
+            holder.iconImage = (SimpleDraweeView)convertView.findViewById(R.id.doctor_icon);
+            holder.nameTv = (TextView)convertView.findViewById(R.id.doctor_name);
+            holder.appellationTv = (TextView)convertView.findViewById(R.id.doctor_appellation);
+            holder.majorTv = (TextView)convertView.findViewById(R.id.doctor_major);
+            holder.chatTv = (TextView)convertView.findViewById(R.id.doctor_chat_btn);
             convertView.setTag(holder);
-        }else
-        {
-            holder = (ViewHolder)convertView.getTag();
+        }else{
+            holder = (ViewHolder) convertView.getTag();
         }
-        holder.img.setImageResource((Integer) data.get(position).get("img"));
-        holder.title.setText((String)data.get(position).get("title"));
-        holder.info.setText((String)data.get(position).get("info"));
-
+        holder.iconImage.setImageURI(doctor.getPhoto());
+        holder.nameTv.setText(doctor.getName());
+        holder.appellationTv.setText(doctor.getAppellation());
+        holder.majorTv.setText(mContext.getString(R.string.be_kind_at)+doctor.getMajor());
+        holder.chatTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                T.show(mContext,"咨询他");
+            }
+        });
         return convertView;
+    }
+    private class ViewHolder{
+        SimpleDraweeView iconImage;
+        TextView nameTv;
+        TextView appellationTv;
+        TextView majorTv;
+        TextView chatTv;
     }
 }

@@ -2,34 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
-        android:id="@+id/friends_layout"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="45dp">
-        <ImageView
-            android:id="@+id/friends_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:background="@drawable/default_icon"/>
-        <TextView
-            android:id="@+id/friends_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/friends_icon"
-            android:layout_centerVertical="true"/>
-
-        <ListView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/friends_list">
-        </ListView>
-
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/text_color_gray"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/friends_list"
+        android:dividerHeight="1px">
+    </ListView>
 </LinearLayout>
