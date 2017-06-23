@@ -1,5 +1,6 @@
 package com.uestcpg.remotedoctor.fragments.tab;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,10 +11,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.squareup.okhttp.Request;
 import com.uestcpg.remotedoctor.DoctorListAdapter;
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.app.AppStatus;
+import com.uestcpg.remotedoctor.beans.DoctorBean;
+import com.uestcpg.remotedoctor.network.APPUrl;
+import com.uestcpg.remotedoctor.network.GsonHelper;
+import com.uestcpg.remotedoctor.network.OkHttpCallBack;
+import com.uestcpg.remotedoctor.network.OkHttpManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +46,12 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     TextView mFriendName;
     @InjectView(R.id.friends_list)
     ListView mFriendsList;
+
+    String doctor_photo;
+    String doctor_name;
+    String doctor_appellation;
+    String doctor_major;
+    String advisory;
 
     private List<Map<String, Object>> data;
 
@@ -76,6 +90,23 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
             list.add(map);
         }
         return list;
+    }
+
+    private void GetDoctor(){
+
+
+        OkHttpManager.getInstance()._getAsyn(APPUrl.REGISTER_URL, new OkHttpCallBack() {
+                    @Override
+                    public void onRespone(String result) {
+                        DoctorBean bean = GsonHelper.getGson().fromJson(result,DoctorBean.class);
+                        Toast.makeText(Activity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
     }
 
     private void init(){

@@ -10,4 +10,5 @@ public class APPUrl {
     private static final String SERVER_URL = "http://doctor.xiaopeng.site:808/api/";
     public static final String REGISTER_URL = SERVER_URL+"Register";  //注册地址
     public static final String LOGIN_URL = SERVER_URL+"Login"; //登录地址
+    public static final String GETDOCTOR_URL = SERVER_URL+"GetDoctor"; //获得医生
 }
