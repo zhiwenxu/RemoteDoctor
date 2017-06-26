@@ -39,4 +39,12 @@ public class DoctorBean {
     public void setMessage(String message) {
         Message = message;
     }
+
+    public List<Doctor> getDoctors() {
+        return doctors;
+    }
+
+    public void setDoctors(List<Doctor> doctors) {
+        this.doctors = doctors;
+    }
 }

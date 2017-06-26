@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.support.v4.app.FragmentActivity;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        Fresco.initialize(this);
         RongIM.init(this);
     }
 

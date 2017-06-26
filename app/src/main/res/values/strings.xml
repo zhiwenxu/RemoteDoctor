@@ -10,4 +10,10 @@
     <string name="home_tab_doctor">医生</string>
     <string name="home_tab_message">消息</string>
     <string name="home_tab_me">我</string>
+    <string name="app_ask">咨询</string>
+    <string name="be_kind_at">擅长领域:</string>
+    <string name="account_null_tip">账号不能为空</string>
+    <string name="pwd_null_tip">密码不能为空</string>
+    <string name="name_null_tip">名字不能为空</string>
+    <string name="account_pwd_null_tip">账号或密码错误</string>
 </resources>

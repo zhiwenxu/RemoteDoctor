@@ -53,8 +53,11 @@ public class OkHttpManager {
     }
 
     //get方式异步请求
-    public void _getAsyn(String url, final OkHttpCallBack callBack){
-        Request request = new Request.Builder().url(url).build();
+    public void _getAsyn(String url, String token,final OkHttpCallBack callBack){
+        Request.Builder builder = new Request.Builder().url(url);
+        builder.addHeader("Content-Type",CONTENT_TYPE);
+        builder.addHeader("token",token);
+        Request request = builder.url(url).build();
         Call call = okHttpClient.newCall(request);
         callRequest(call,callBack);
     }
