@@ -65,7 +65,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         String pwd = MD5Util.stringMD5(rPasswordEdit.getText().toString());
         String phone = rPhoneEdit.getText().toString();
         String name = rNameEdit.getText().toString();
-        String isDoctor = "0";
+        String isDoctor = "false";
 
         if(StringUtil.isEmpty(phone)){
             //zhe   ge  pan duan    shifou  wei  kong
