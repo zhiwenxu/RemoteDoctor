@@ -1,19 +1,12 @@
 package com.uestcpg.remotedoctor.activitys.start;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.uestcpg.remotedoctor.R;
-import com.uestcpg.remotedoctor.activitys.main.MainActivity;
-import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.app.BaseActivity;
 import com.uestcpg.remotedoctor.beans.RegisterBean;
 import com.uestcpg.remotedoctor.network.APPUrl;
@@ -23,17 +16,15 @@ import com.uestcpg.remotedoctor.network.OkHttpManager;
 import com.uestcpg.remotedoctor.utils.MD5Util;
 import com.uestcpg.remotedoctor.utils.ParamUtil;
 import com.uestcpg.remotedoctor.utils.StringUtil;
+import com.uestcpg.remotedoctor.utils.T;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 
 /**
  * Created by POPLX on 2017/6/18.
+ *
  */
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener{
@@ -48,7 +39,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @InjectView(R.id.register_phone)
     EditText rPhoneEdit;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,33 +52,42 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void Register(){
 
-        String pwd = MD5Util.stringMD5(rPasswordEdit.getText().toString());
+        String pwd = rPasswordEdit.getText().toString();
         String phone = rPhoneEdit.getText().toString();
         String name = rNameEdit.getText().toString();
-        String isDoctor = "0";
 
         if(StringUtil.isEmpty(phone)){
-            //zhe   ge  pan duan    shifou  wei  kong
+            T.show(this,getString(R.string.account_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(pwd)){
+            T.show(this,getString(R.string.pwd_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(name)){
+            T.show(this,getString(R.string.name_null_tip));
+            return;
         }
 
+        String pwdMD5 = MD5Util.stringMD5(pwd);
         ParamUtil.put("phone",phone);
-        ParamUtil.put("password",pwd);
+        ParamUtil.put("password",pwdMD5);
         ParamUtil.put("name",name);
-        ParamUtil.put("doctor",isDoctor);//
+        ParamUtil.put("doctor","false");
 
         OkHttpManager.getInstance()._postAsyn(APPUrl.REGISTER_URL,ParamUtil.getParams()
                 , new OkHttpCallBack() {
-            @Override
-            public void onRespone(String result) {
-                RegisterBean bean = GsonHelper.getGson().fromJson(result,RegisterBean.class);
-                Toast.makeText(RegisterActivity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
-                finish();
-            }
-            @Override
-            public void onError(Request request, Exception e) {
-                e.printStackTrace();
-            }
-        });
+                    @Override
+                    public void onRespone(String result) {
+                        RegisterBean bean = GsonHelper.getGson().fromJson(result,RegisterBean.class);
+                        T.show(RegisterActivity.this,bean.getMessage());
+                        finish();
+                    }
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
     }
     @Override

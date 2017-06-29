@@ -3,16 +3,25 @@ package com.uestcpg.remotedoctor.activitys.start;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.activitys.main.MainActivity;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.app.BaseActivity;
 import com.uestcpg.remotedoctor.beans.LoginBean;
+import com.uestcpg.remotedoctor.beans.RCBean;
 import com.uestcpg.remotedoctor.network.APPUrl;
 import com.uestcpg.remotedoctor.network.GsonHelper;
 import com.uestcpg.remotedoctor.network.OkHttpCallBack;
@@ -24,6 +33,7 @@ import com.uestcpg.remotedoctor.utils.T;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import io.rong.imageloader.utils.L;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
@@ -73,10 +83,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             public void onRespone(String result) {
                 LoginBean bean = GsonHelper.getGson().fromJson(result,LoginBean.class);
                 if(StringUtil.isTrue(bean.getSuccess())){
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     AppStatus.setToken(bean.getToken());
-                    startActivity(intent);
-                    finish();
+                    getRCToken(bean.getToken());
                 }
                 else{
                     T.show(LoginActivity.this,getString(R.string.account_pwd_null_tip));
@@ -86,6 +94,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void onError(Request request, Exception e) {
 
+            }
+        });
+    }
+
+    private void getRCToken(String token){
+        OkHttpManager.getInstance()._getAsyn(APPUrl.GET_RCTOKEN_URL, token, new OkHttpCallBack() {
+            @Override
+            public void onRespone(String result) {
+                Log.e("e",result+"|");
+                RCBean bean = GsonHelper.getGson().fromJson(result,RCBean.class);
+                if(StringUtil.isTrue(bean.getSuccess())){
+                    AppStatus.setrCToken(bean.getRCToken());
+                    connect(bean.getRCToken());
+                }else{
+                    T.show(LoginActivity.this,bean.getMessage());
+                }
+            }
+            @Override
+            public void onError(Request request, Exception e) {
+                T.show(LoginActivity.this,getString(R.string.get_RC_error));
             }
         });
     }

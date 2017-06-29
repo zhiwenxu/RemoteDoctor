@@ -10,4 +10,5 @@ public class APPUrl {
     public static final String REGISTER_URL = SERVER_URL+"Register";  //注册地址
     public static final String LOGIN_URL = SERVER_URL+"Login"; //登录地址
     public static final String GET_DOCTOR_URL = SERVER_URL+"GetDoctor";//获得医生地址
+    public static final String GET_RCTOKEN_URL = SERVER_URL+"GetRCToken";//获取融云token
 }

@@ -21,6 +21,5 @@ public class ConversationActivity extends BaseFragmentActivity {
     }
     private void initViews(){
         initTitle();
-        setCenterTv(AppStatus.getTagetId());
     }
 }

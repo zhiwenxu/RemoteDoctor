@@ -7,8 +7,8 @@ package com.uestcpg.remotedoctor.app;
 public class AppStatus {
     private static String userid;
     private static String token;
+    private static String rCToken;
     private static String username;
-    private static String tagetId;
 
     public static void setUserId(String id){
         userid = id;
@@ -22,9 +22,6 @@ public class AppStatus {
         username = name;
     }
 
-    public static void setTagetId(String id){
-        tagetId = id;
-    }
 
     public static String getUserId(){
         return userid;
@@ -35,7 +32,20 @@ public class AppStatus {
     public static String getUsername(){
         return username;
     }
-    public static String getTagetId(){
-        return tagetId;
+
+    public static String getUserid() {
+        return userid;
+    }
+
+    public static void setUserid(String userid) {
+        AppStatus.userid = userid;
+    }
+
+    public static String getrCToken() {
+        return rCToken;
+    }
+
+    public static void setrCToken(String rCToken) {
+        AppStatus.rCToken = rCToken;
     }
 }

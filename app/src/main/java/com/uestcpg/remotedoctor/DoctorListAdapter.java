@@ -1,6 +1,7 @@
 package com.uestcpg.remotedoctor;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,13 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.uestcpg.remotedoctor.Class.Doctor;
+import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.utils.T;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.rong.imkit.RongIM;
 
 
 /**
@@ -60,7 +64,7 @@ public class DoctorListAdapter extends BaseAdapter{
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
         ViewHolder holder = null;
-        Doctor doctor = doctors.get(i);
+        final Doctor doctor = doctors.get(i);
         if(convertView == null){
             convertView = LayoutInflater.from(mContext).inflate(R.layout.doctor_list_item,null);
             holder = new ViewHolder();
@@ -80,7 +84,7 @@ public class DoctorListAdapter extends BaseAdapter{
         holder.chatTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                T.show(mContext,"咨询他");
+                RongIM.getInstance().startPrivateChat(mContext,doctor.getPhone(), AppStatus.getUsername());
             }
         });
         return convertView;

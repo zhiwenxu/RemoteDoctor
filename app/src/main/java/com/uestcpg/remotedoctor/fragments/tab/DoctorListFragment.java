@@ -86,7 +86,7 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
 //        if(v == mFriendLayout){
-//            RongIM.getInstance().startPrivateChat(getActivity(),AppStatus.getTagetId(),AppStatus.getUsername());
+//
 //        }
     }
 }
