@@ -3,4 +3,54 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <TextView android:text="@string/name"
+            android:layout_width="match_parent"
+            android:textSize="25dp"
+            android:layout_weight="4"
+            android:layout_height="45dp" />
+
+        <TextView
+            android:id="@+id/information_name"
+            android:text="患者一"
+            android:layout_width="match_parent"
+            android:textSize="20dp"
+            android:layout_weight="1"
+            android:layout_height="45dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <TextView android:text="@string/phone"
+            android:layout_width="match_parent"
+            android:textSize="25dp"
+            android:layout_weight="4"
+            android:layout_height="45dp" />
+
+        <TextView
+            android:id="@+id/information_phone"
+            android:text="15108307491"
+            android:layout_width="match_parent"
+            android:textSize="20dp"
+            android:layout_weight="1"
+            android:layout_height="45dp" />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/changepwd_btn"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/change_password"
+        android:textColor="@color/app_white"
+        android:background="@drawable/green_btn_bg"/>
 </LinearLayout>
