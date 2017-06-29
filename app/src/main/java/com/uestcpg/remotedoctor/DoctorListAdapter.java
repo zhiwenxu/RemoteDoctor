@@ -23,6 +23,7 @@ import io.rong.imkit.RongIM;
 
 /**
  * Created by poplx on 2017/6/21.
+ *
  */
 
 public class DoctorListAdapter extends BaseAdapter{

@@ -4,12 +4,12 @@
         "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f349.png"
     },
     {
-        "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_ic_volume_6.png",
-        "source": "E:\\workspace\\RemoteDoctor\\IMKit\\src\\main\\res\\drawable-xhdpi\\rc_ic_volume_6.png"
-    },
-    {
         "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f60c.png",
         "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f60c.png"
+    },
+    {
+        "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_ic_volume_6.png",
+        "source": "E:\\workspace\\RemoteDoctor\\IMKit\\src\\main\\res\\drawable-xhdpi\\rc_ic_volume_6.png"
     },
     {
         "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_edit_text_background_hover.9.png",
@@ -20,12 +20,12 @@
         "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f451.png"
     },
     {
-        "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f6b2.png",
-        "source": "E:\\workspace\\RemoteDoctor\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f6b2.png"
-    },
-    {
         "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f366.png",
         "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f366.png"
+    },
+    {
+        "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f6b2.png",
+        "source": "E:\\workspace\\RemoteDoctor\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f6b2.png"
     },
     {
         "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f4a9.png",
