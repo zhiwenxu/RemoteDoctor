@@ -8,6 +8,7 @@
     <string name="register_now">立即注册</string>
     <string name="confirm_change">确认修改</string>
     <string name="change_information">修改资料</string>
+    <string name="confirm_password">确认密码</string>
 
     <string name="home_tab_doctor">医生</string>
     <string name="home_tab_message">消息</string>
@@ -17,6 +18,8 @@
     <string name="account_null_tip">账号不能为空</string>
     <string name="pwd_null_tip">密码不能为空</string>
     <string name="name_null_tip">名字不能为空</string>
+    <string name="confirm_pwd_null_tip">确认密码不能为空</string>
+    <string name="wrong_pwd_tip">两次密码不同</string>
     <string name="account_pwd_null_tip">账号或密码错误</string>
     <string name="get_RC_error">获取融云Token失败!</string>
 </resources>

@@ -9,6 +9,8 @@ import android.widget.EditText;
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.app.BaseActivity;
 import com.uestcpg.remotedoctor.utils.MD5Util;
+import com.uestcpg.remotedoctor.utils.StringUtil;
+import com.uestcpg.remotedoctor.utils.T;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -22,6 +24,8 @@ public class MeFragmentChange extends BaseActivity implements View.OnClickListen
     Button Confirm_Change_btn;
     @InjectView(R.id.change_password)
     EditText Change_Password;
+    @InjectView(R.id.confirm_password)
+    EditText Confirm_Password;
     @InjectView(R.id.change_name)
     EditText Change_Name;
 
@@ -39,7 +43,25 @@ public class MeFragmentChange extends BaseActivity implements View.OnClickListen
 
     private void ConfirmChange(){
         String pwd = MD5Util.stringMD5(Change_Password.getText().toString());
+        String confirm_pwd = MD5Util.stringMD5(Confirm_Password.getText().toString());
         String name = Change_Name.getText().toString();
+
+        if(StringUtil.isEmpty(name)){
+            T.show(this,getString(R.string.account_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(pwd)){
+            T.show(this,getString(R.string.pwd_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(confirm_pwd)){
+            T.show(this,getString(R.string.confirm_pwd_null_tip));
+            return;
+        }
+        if(pwd.equals(confirm_pwd)!=true){
+            T.show(this,getString(R.string.wrong_pwd_tip));
+            return;
+        }
     }
 
     @Override
