@@ -67,14 +67,16 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     }
 
     private void getData(){
-        OkHttpManager.getInstance()._getAsyn(APPUrl.GET_DOCTOR_URL, AppStatus.getToken(), new OkHttpCallBack() {
+        ParamUtil.put("token",AppStatus.getToken());
+        OkHttpManager.getInstance()._postAsyn(APPUrl.GET_DOCTOR_URL,ParamUtil.getParams(),new OkHttpCallBack() {
             @Override
             public void onRespone(String result) {
                 DoctorBean bean = GsonHelper.getGson().fromJson(result,DoctorBean.class);
                 if(StringUtil.isTrue(bean.getSuccess())){
                     mDoctorListAdapter.addDatas(bean.getDoctors());
+                }else{
+                    T.show(getActivity(),bean.getMessage());
                 }
-                T.show(getActivity(),bean.getMessage());
             }
             @Override
             public void onError(Request request, Exception e) {

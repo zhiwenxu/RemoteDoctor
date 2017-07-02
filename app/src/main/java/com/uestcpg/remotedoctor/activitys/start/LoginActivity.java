@@ -3,37 +3,28 @@ package com.uestcpg.remotedoctor.activitys.start;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.activitys.main.MainActivity;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.app.BaseActivity;
 import com.uestcpg.remotedoctor.beans.LoginBean;
-import com.uestcpg.remotedoctor.beans.RCBean;
 import com.uestcpg.remotedoctor.network.APPUrl;
 import com.uestcpg.remotedoctor.network.GsonHelper;
 import com.uestcpg.remotedoctor.network.OkHttpCallBack;
 import com.uestcpg.remotedoctor.network.OkHttpManager;
 import com.uestcpg.remotedoctor.utils.MD5Util;
 import com.uestcpg.remotedoctor.utils.ParamUtil;
+import com.uestcpg.remotedoctor.utils.SPUtil;
 import com.uestcpg.remotedoctor.utils.StringUtil;
 import com.uestcpg.remotedoctor.utils.T;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import io.rong.imageloader.utils.L;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
@@ -61,6 +52,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
     private void init(){
         ButterKnife.inject(this);
+        mPhoneEdit.setText(SPUtil.getUsername(this));
+        mPasswordEdit.setText(SPUtil.getPassWord(this));
         mLoginBtn.setOnClickListener(this);
         mLoginRegisterBtn.setOnClickListener(this);
     }
@@ -78,42 +71,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         String pwdMD5 = MD5Util.stringMD5(pwd);
         ParamUtil.put("phone",phone);
         ParamUtil.put("password",pwdMD5);
+        ParamUtil.put("doctor","false");
         OkHttpManager.getInstance()._postAsyn(APPUrl.LOGIN_URL,ParamUtil.getParams(), new OkHttpCallBack() {
             @Override
             public void onRespone(String result) {
                 LoginBean bean = GsonHelper.getGson().fromJson(result,LoginBean.class);
                 if(StringUtil.isTrue(bean.getSuccess())){
                     AppStatus.setToken(bean.getToken());
-                    getRCToken(bean.getToken());
+                    AppStatus.setrCToken(bean.getRCToken());
                 }
                 else{
                     T.show(LoginActivity.this,getString(R.string.account_pwd_null_tip));
                 }
-                connect(bean.getToken());
+                connect(bean.getRCToken());
             }
             @Override
             public void onError(Request request, Exception e) {
 
-            }
-        });
-    }
-
-    private void getRCToken(String token){
-        OkHttpManager.getInstance()._getAsyn(APPUrl.GET_RCTOKEN_URL, token, new OkHttpCallBack() {
-            @Override
-            public void onRespone(String result) {
-                Log.e("e",result+"|");
-                RCBean bean = GsonHelper.getGson().fromJson(result,RCBean.class);
-                if(StringUtil.isTrue(bean.getSuccess())){
-                    AppStatus.setrCToken(bean.getRCToken());
-                    connect(bean.getRCToken());
-                }else{
-                    T.show(LoginActivity.this,bean.getMessage());
-                }
-            }
-            @Override
-            public void onError(Request request, Exception e) {
-                T.show(LoginActivity.this,getString(R.string.get_RC_error));
             }
         });
     }
@@ -135,11 +109,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
              */
             @Override
             public void onSuccess(String userid) {
+                SPUtil.setUsername(LoginActivity.this,mPhoneEdit.getText().toString().trim());
+                SPUtil.setPassword(LoginActivity.this,mPasswordEdit.getText().toString().trim());
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
-
             /**
              * 连接融云失败
              * @param errorCode 错误码，可到官网 查看错误码对应的注释

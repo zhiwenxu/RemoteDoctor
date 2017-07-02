@@ -5,6 +5,7 @@ import android.app.Application;
 import android.support.v4.app.FragmentActivity;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.uestcpg.remotedoctor.RongCloudEvent.RongCloudEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class BaseApplication extends Application {
         instance = this;
         Fresco.initialize(this);
         RongIM.init(this);
+        RongCloudEvent.setMyExtensionModule();
     }
 
 

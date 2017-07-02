@@ -9,6 +9,7 @@ public class LoginBean {
     private String Token;
     private String Success;
     private String Message;
+    private String RCToken;
 
     public String getToken() {
         return Token;
@@ -32,5 +33,13 @@ public class LoginBean {
 
     public void setMessage(String message) {
         Message = message;
+    }
+
+    public String getRCToken() {
+        return RCToken;
+    }
+
+    public void setRCToken(String RCToken) {
+        this.RCToken = RCToken;
     }
 }

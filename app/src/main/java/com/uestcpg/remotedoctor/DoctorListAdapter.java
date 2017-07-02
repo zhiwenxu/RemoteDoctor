@@ -91,7 +91,6 @@ public class DoctorListAdapter extends BaseAdapter{
         return convertView;
     }
     private class ViewHolder{
-
         SimpleDraweeView iconImage;
         TextView nameTv;
         TextView appellationTv;

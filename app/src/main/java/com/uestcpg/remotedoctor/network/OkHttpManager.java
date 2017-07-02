@@ -7,6 +7,7 @@ import android.os.Looper;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -15,6 +16,9 @@ import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -53,19 +57,25 @@ public class OkHttpManager {
     }
 
     //get方式异步请求
-    public void _getAsyn(String url, String token,final OkHttpCallBack callBack){
+    public void _getAsyn(String url,final OkHttpCallBack callBack){
         Request.Builder builder = new Request.Builder().url(url);
-        builder.addHeader("Content-Type",CONTENT_TYPE);
-        builder.addHeader("token",token);
         Request request = builder.url(url).build();
         Call call = okHttpClient.newCall(request);
         callRequest(call,callBack);
     }
 
     //post方式异步请求
-    public void _postAsyn(String url, String content, final OkHttpCallBack callBack){
-        RequestBody body = RequestBody.create(MediaType.parse(CONTENT_TYPE),content);
-        Request request = new Request.Builder().url(url).post(body).build();
+    public void _postAsyn(String url, Map<String,String> map, final OkHttpCallBack callBack){
+        FormEncodingBuilder builder = new FormEncodingBuilder();
+        if(map != null){
+            Set<String> set = map.keySet();
+            Iterator iterator = set.iterator();
+            while (iterator.hasNext()){
+                String key = iterator.next().toString();
+                builder.add(key,map.get(key));
+            }
+        }
+        Request request = new Request.Builder().url(url).post(builder.build()).build();
         Call call = okHttpClient.newCall(request);
         callRequest(call,callBack);
     }

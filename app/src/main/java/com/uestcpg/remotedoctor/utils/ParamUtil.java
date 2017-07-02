@@ -1,12 +1,9 @@
 package com.uestcpg.remotedoctor.utils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by xzw on 2017/6/19.
@@ -22,19 +19,14 @@ public class ParamUtil {
         map.put(key,value);
     }
     //获得参数的json格式
-    public static String getParams(){
-        Set set = map.keySet();
-        Iterator i = set.iterator();
-        JSONObject jsonObject = new JSONObject();
-        while (i.hasNext()){
-            String key = i.next().toString();
-            try {
-                jsonObject.put(key,map.get(key));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+    public static Map<String,String> getParams(){
+        Map<String,String> m = new HashMap<>();
+        Iterator iterator = map.keySet().iterator();
+        while (iterator.hasNext()){
+            String key = iterator.next().toString();
+            m.put(key,map.get(key).toString());
         }
-        map.clear();//及时清空map中的内容
-        return "=" + jsonObject.toString();
+        map.clear();
+        return m;
     }
 }

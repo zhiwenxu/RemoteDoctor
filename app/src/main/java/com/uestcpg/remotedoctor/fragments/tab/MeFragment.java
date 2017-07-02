@@ -18,14 +18,14 @@ import butterknife.InjectView;
  * Created by dmsoft on 2017/6/14.
  */
 
-public class MeFragment extends Fragment {
+public class MeFragment extends Fragment implements View.OnClickListener{
 
     public static MeFragment getInstance(){
         return new MeFragment();
     }
 
-    @InjectView(R.id.change_information_btn)
-    Button Change_Information_btn;
+//    @InjectView(R.id.change_information_btn)
+//    Button Change_Information_btn;
 
     @Nullable
     @Override
@@ -40,15 +40,15 @@ public class MeFragment extends Fragment {
     }
 
     private void ChangeInfomation(){
-        Intent intent = new Intent(MeFragment.this, MeFragmentChange.class);
+        Intent intent = new Intent(getActivity(), MeFragmentChange.class);
         startActivity(intent);
     }
 
     @Override
     public void onClick(View v) {
-        if(v == Change_Information_btn){
-            ChangeInfomation();
-        }
+//        if(v == Change_Information_btn){
+//            ChangeInfomation();
+//        }
     }
 
 }
