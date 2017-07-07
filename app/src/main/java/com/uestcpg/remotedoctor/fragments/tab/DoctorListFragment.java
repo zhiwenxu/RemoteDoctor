@@ -1,20 +1,20 @@
 package com.uestcpg.remotedoctor.fragments.tab;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.squareup.okhttp.Request;
 import com.uestcpg.remotedoctor.Class.Doctor;
-import com.uestcpg.remotedoctor.DoctorListAdapter;
+import com.uestcpg.remotedoctor.adapters.DoctorListAdapter;
 import com.uestcpg.remotedoctor.R;
+import com.uestcpg.remotedoctor.activitys.main.DoctorInfoActivity;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.beans.DoctorBean;
 import com.uestcpg.remotedoctor.network.APPUrl;
@@ -26,20 +26,17 @@ import com.uestcpg.remotedoctor.utils.StringUtil;
 import com.uestcpg.remotedoctor.utils.T;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import io.rong.imkit.RongIM;
 
 /**
  * Created by dmsoft on 2017/6/14.
  *
  */
 
-public class DoctorListFragment extends Fragment implements View.OnClickListener{
+public class DoctorListFragment extends Fragment implements View.OnClickListener,AdapterView.OnItemClickListener{
 
     @InjectView(R.id.friends_list)
     ListView mFriendsList;
@@ -64,6 +61,7 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     private void init(){
         mDoctorListAdapter = new DoctorListAdapter(getActivity(),doctors);
         mFriendsList.setAdapter(mDoctorListAdapter);
+        mFriendsList.setOnItemClickListener(this);
     }
 
     private void getData(){
@@ -90,5 +88,12 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
 //        if(v == mFriendLayout){
 //
 //        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(getContext(), DoctorInfoActivity.class);
+        intent.putExtra("doctorPhone",doctors.get(position).getPhone());
+        startActivity(intent);
     }
 }

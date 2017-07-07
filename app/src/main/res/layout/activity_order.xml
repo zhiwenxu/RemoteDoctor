@@ -3,10 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_white">
+
+    <include layout="@layout/title_bar"></include>
+
     <ListView
+        android:id="@+id/order_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/friends_list"
-        android:dividerHeight="1px">
-    </ListView>
+        android:layout_height="match_parent"
+        android:dividerHeight="1px"/>
+
 </LinearLayout>

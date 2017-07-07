@@ -1,8 +1,11 @@
 package com.uestcpg.remotedoctor.activitys.start;
 
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,7 +62,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
     private void checkLogin(){
         String pwd = mPasswordEdit.getText().toString();
-        String phone = mPhoneEdit.getText().toString();
+        final String phone = mPhoneEdit.getText().toString();
         if(StringUtil.isEmpty(phone)){
             T.show(this,getString(R.string.account_null_tip));
             return;
@@ -77,6 +80,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             public void onRespone(String result) {
                 LoginBean bean = GsonHelper.getGson().fromJson(result,LoginBean.class);
                 if(StringUtil.isTrue(bean.getSuccess())){
+                    AppStatus.setUserid(phone);
                     AppStatus.setToken(bean.getToken());
                     AppStatus.setrCToken(bean.getRCToken());
                 }

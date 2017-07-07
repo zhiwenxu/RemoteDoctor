@@ -3,50 +3,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/doctor_icon"
+            android:id="@+id/order_icon"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            app:fadeDuration="1000"
-            app:roundAsCircle="true"
-            app:placeholderImage="@color/app_common_color_green"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"/>
+            android:layout_marginLeft="15dp"
+            app:fadeDuration="1000"
+            app:placeholderImage="@color/app_common_color_green"
+            app:roundAsCircle="true" />
+
         <TextView
-            android:id="@+id/doctor_name"
+            android:id="@+id/order_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/order_icon"
             android:text="医生"
             android:textColor="@color/app_black"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/doctor_icon"
-            android:layout_marginTop="5dp"/>
+            android:textSize="18sp" />
+
         <TextView
-            android:id="@+id/doctor_appellation"
+            android:id="@+id/order_accept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="主治医生"
+            android:layout_below="@id/order_name"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/doctor_icon"
-            android:layout_below="@id/doctor_name"/>
+            android:layout_toRightOf="@id/order_icon"
+            android:text="接受"
+            android:textSize="14sp" />
+
         <TextView
-            android:id="@+id/doctor_major"
+            android:id="@+id/order_datetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="内科"
-            android:layout_marginLeft="10dp"
+            android:layout_below="@id/order_accept"
             android:layout_marginBottom="5dp"
-            android:layout_toRightOf="@id/doctor_icon"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:layout_below="@id/doctor_appellation"/>
+            android:layout_toRightOf="@id/order_icon"
+            android:text="2017-07-05 8:00"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/order_accept_icon"
+            android:layout_width="65dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/order_accept" />
 
     </RelativeLayout>
 </LinearLayout>

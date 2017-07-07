@@ -6,7 +6,7 @@
         android:background="@color/app_common_color_green">
         <ImageView
             android:id="@+id/title_back"
-            android:layout_width="10dp"
+            android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"

@@ -236,14 +236,15 @@ public class AlertView implements OnItemSelectedListener {
             @Override
             public void onClick(View view) {
                 dismiss();
-                String s = CalenderUtil.getYear()+"";
+                String s = "";
                 if (month != null) {
                     s = s + monthView.getItems().get(monthView.getSelectedItem());
                 }
                 if (day != null) {
                     s = s + dayView.getItems().get(dayView.getSelectedItem());
                 }
-                confirmeListener.result(s);
+                s = CalenderUtil.getYear()+"-"+s.replace("月","-").replace("日","-");
+                confirmeListener.result(s+" "+hourView.getItems().get(hourView.getSelectedItem()));
             }
         });
         viewGroup.findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {

@@ -1,21 +1,16 @@
-package com.uestcpg.remotedoctor;
+package com.uestcpg.remotedoctor.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.uestcpg.remotedoctor.Class.Doctor;
+import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.app.AppStatus;
-import com.uestcpg.remotedoctor.utils.T;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import io.rong.imkit.RongIM;
@@ -33,8 +28,7 @@ public class DoctorListAdapter extends BaseAdapter{
 
     public DoctorListAdapter(Context context,List<Doctor> datas) {
         this.mContext = context;
-        doctors = new ArrayList<>();
-        doctors.addAll(datas);
+        this.doctors = datas;
     }
     //添加所有数据
     public void addDatas(List<Doctor> datas){
@@ -73,7 +67,6 @@ public class DoctorListAdapter extends BaseAdapter{
             holder.nameTv = (TextView)convertView.findViewById(R.id.doctor_name);
             holder.appellationTv = (TextView)convertView.findViewById(R.id.doctor_appellation);
             holder.majorTv = (TextView)convertView.findViewById(R.id.doctor_major);
-            holder.chatTv = (TextView)convertView.findViewById(R.id.doctor_chat_btn);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
@@ -82,12 +75,6 @@ public class DoctorListAdapter extends BaseAdapter{
         holder.nameTv.setText(doctor.getName());
         holder.appellationTv.setText(doctor.getAppellation());
         holder.majorTv.setText(mContext.getString(R.string.be_kind_at)+doctor.getMajor());
-        holder.chatTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RongIM.getInstance().startPrivateChat(mContext,doctor.getPhone(), AppStatus.getUsername());
-            }
-        });
         return convertView;
     }
     private class ViewHolder{
@@ -95,6 +82,5 @@ public class DoctorListAdapter extends BaseAdapter{
         TextView nameTv;
         TextView appellationTv;
         TextView majorTv;
-        TextView chatTv;
     }
 }

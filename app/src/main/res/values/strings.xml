@@ -23,6 +23,20 @@
     <string name="account_pwd_null_tip">账号或密码错误</string>
     <string name="get_RC_error">获取融云Token失败!</string>
 
+    <string name="my_data_str">我的资料</string>
+    <string name="my_rc">预约日程</string>
+    <string name="my_jf">我的积分</string>
+    <string name="my_qb">我的钱包</string>
+    <string name="my_ct">我的词条</string>
+    <string name="detail_data">详细资料</string>
+    <string name="sick_record">病例记录</string>
+    <string name="send_msg">发送消息</string>
+    <string name="send_order">发起预约</string>
+
     <string name="pickerview_cancel">取消</string>
     <string name="pickerview_submit">确定</string>
+    <string name="sick_description">描述</string>
+    <string name="order_wait">未处理</string>
+    <string name="order_accept">接受预约</string>
+    <string name="order_reject">拒绝预约</string>
 </resources>

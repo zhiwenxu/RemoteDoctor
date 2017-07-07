@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@color/app_common_color_green"/>
+    android:layout_height="match_parent"
+    android:background="@color/app_white">
 
-
-
-
-
-
+    <include layout="@layout/title_bar"></include>
 
     <EditText
         android:id="@+id/change_name"
@@ -25,6 +18,19 @@
         android:paddingRight="5dp"
         android:textSize="14sp"
         android:hint="@string/name"/>
+
+    <EditText
+        android:id="@+id/change_description"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/app_edit_bg"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textSize="14sp"
+        android:hint="@string/sick_description"/>
 
     <EditText
         android:id="@+id/change_password"
