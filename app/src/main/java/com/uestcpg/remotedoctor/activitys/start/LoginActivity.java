@@ -1,11 +1,8 @@
 package com.uestcpg.remotedoctor.activitys.start;
 
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +22,7 @@ import com.uestcpg.remotedoctor.utils.ParamUtil;
 import com.uestcpg.remotedoctor.utils.SPUtil;
 import com.uestcpg.remotedoctor.utils.StringUtil;
 import com.uestcpg.remotedoctor.utils.T;
+import com.uestcpg.remotedoctor.views.LoadingDialog;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -47,6 +45,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     @InjectView(R.id.login_password)
     EditText mPasswordEdit;
 
+    private LoadingDialog dialog = null;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +54,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
     private void init(){
         ButterKnife.inject(this);
+        dialog = new LoadingDialog(this);
         mPhoneEdit.setText(SPUtil.getUsername(this));
         mPasswordEdit.setText(SPUtil.getPassWord(this));
         mLoginBtn.setOnClickListener(this);
         mLoginRegisterBtn.setOnClickListener(this);
+        dialog.setTip(getString(R.string.logining_tip));
     }
     private void checkLogin(){
         String pwd = mPasswordEdit.getText().toString();
@@ -71,6 +72,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             T.show(this,getString(R.string.pwd_null_tip));
             return;
         }
+
+        dialog.show();
         String pwdMD5 = MD5Util.stringMD5(pwd);
         ParamUtil.put("phone",phone);
         ParamUtil.put("password",pwdMD5);
@@ -113,6 +116,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
              */
             @Override
             public void onSuccess(String userid) {
+                dialog.dismiss();
                 SPUtil.setUsername(LoginActivity.this,mPhoneEdit.getText().toString().trim());
                 SPUtil.setPassword(LoginActivity.this,mPasswordEdit.getText().toString().trim());
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -128,6 +132,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(dialog.isShowing()){
+            dialog.dismiss();
+        }
     }
 
     private void Register(){

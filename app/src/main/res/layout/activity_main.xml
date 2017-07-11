@@ -23,7 +23,7 @@
                 android:layout_height="26dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
-                android:background="@drawable/home_bottom_tab_notification_press_up" />
+                android:background="@drawable/home_tab_message_down" />
             <TextView
                 android:id="@+id/tab_message_tv"
                 android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
                 android:layout_height="26dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
-                android:background="@drawable/home_bottom_tab_chat_press_up"/>
+                android:background="@drawable/home_tab_sick_up"/>
             <TextView
                 android:id="@+id/tab_friends_tv"
                 android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
                 android:layout_height="26dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
-                android:background="@drawable/home_bottom_tab_settings_press_up"/>
+                android:background="@drawable/home_tab_me_up"/>
             <TextView
                 android:id="@+id/tab_me_tv"
                 android:layout_width="wrap_content"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RemoteDoctor</string>
+    <string name="app_name">远程患者</string>
     <string name="name">姓名</string>
     <string name="phone">手机号</string>
     <string name="password">密码</string>
@@ -39,4 +39,5 @@
     <string name="order_wait">未处理</string>
     <string name="order_accept">接受预约</string>
     <string name="order_reject">拒绝预约</string>
+    <string name="logining_tip">登录中...</string>
 </resources>

@@ -103,9 +103,9 @@ public class MainActivity extends BaseFragmentActivity implements ViewPager.OnPa
     }
     //初始化tab
     private void changeTextViewColor() {
-        mMsgIm.setBackgroundResource(R.drawable.home_bottom_tab_notification_press_up);
-        mFriendIm.setBackgroundResource(R.drawable.home_bottom_tab_chat_press_up);
-        mMeIm.setBackgroundResource(R.drawable.home_bottom_tab_settings_press_up);
+        mMsgIm.setBackgroundResource(R.drawable.home_tab_message_up);
+        mFriendIm.setBackgroundResource(R.drawable.home_tab_doctor_up);
+        mMeIm.setBackgroundResource(R.drawable.home_tab_me_up);
         mMsgTv.setTextColor(getResources().getColor(R.color.text_color_gray));
         mFriendsTv.setTextColor(getResources().getColor(R.color.text_color_gray));
         mMeTv.setTextColor(getResources().getColor(R.color.text_color_gray));
@@ -115,24 +115,22 @@ public class MainActivity extends BaseFragmentActivity implements ViewPager.OnPa
         changeTextViewColor();
         switch (position) {
             case 0:
-                mMsgIm.setBackgroundResource(R.drawable.home_bottom_tab_notification_press_down);
+                mMsgIm.setBackgroundResource(R.drawable.home_tab_message_down);
                 mMsgTv.setTextColor(getResources().getColor(R.color.app_common_color_green));
                 setCenterTv("消息");
                 break;
             case 1:
-                mFriendIm.setBackgroundResource(R.drawable.home_bottom_tab_chat_press_down);
+                mFriendIm.setBackgroundResource(R.drawable.home_tab_doctor_down);
                 mFriendsTv.setTextColor(getResources().getColor(R.color.app_common_color_green));
                 setCenterTv("医生");
                 break;
             case 2:
-                mMeIm.setBackgroundResource(R.drawable.home_bottom_tab_settings_press_down);
+                mMeIm.setBackgroundResource(R.drawable.home_tab_me_down);
                 mMeTv.setTextColor(getResources().getColor(R.color.app_common_color_green));
                 setCenterTv("我");
                 break;
-
         }
     }
-
 
     private Fragment initConversationList() {
         if (mConversationListFragment == null) {

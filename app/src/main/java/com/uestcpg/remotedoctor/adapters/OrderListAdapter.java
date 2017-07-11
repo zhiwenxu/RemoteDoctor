@@ -91,10 +91,10 @@ public class OrderListAdapter extends BaseAdapter{
         if(StringUtil.isEmpty(accept)){
             viewHolder.acceptTv.setText(R.string.order_wait);
             viewHolder.tagImage.setBackgroundResource(R.drawable.order_wait);
-        }else if(!StringUtil.isTrue(accept)){
+        }else if(StringUtil.isTrue(accept)){
             viewHolder.acceptTv.setText(R.string.order_accept);
             viewHolder.tagImage.setBackgroundResource(R.drawable.order_accept);
-        }else if(StringUtil.isTrue(accept)){
+        }else if(!StringUtil.isTrue(accept)){
             viewHolder.acceptTv.setText(R.string.order_reject);
             viewHolder.tagImage.setBackgroundResource(R.drawable.order_reject);
         }
