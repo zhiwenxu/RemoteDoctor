@@ -1,9 +1,12 @@
 package com.uestcpg.remotedoctor.activitys.main;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.squareup.okhttp.Request;
@@ -32,13 +35,16 @@ import butterknife.InjectView;
  *
  */
 
-public class OrderActivity extends BaseActivity implements View.OnClickListener{
+public class OrderActivity extends BaseActivity implements View.OnClickListener,AdapterView.OnItemClickListener{
 
     @InjectView(R.id.order_list)
     ListView mListView;
 
     private OrderListAdapter mOrderListAdapter;
     private List<Order> orders = new ArrayList<>();
+
+    private StringUtil isaccept;
+    private String reason;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +61,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener{
 
         mOrderListAdapter = new OrderListAdapter(this,orders);
         mListView.setAdapter(mOrderListAdapter);
+        mListView.setOnItemClickListener(this);
 
         ParamUtil.put("token", AppStatus.getToken());
         ParamUtil.put("phone",AppStatus.getUserid());
@@ -64,6 +71,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener{
                 OrderBean bean = GsonHelper.getGson().fromJson(result,OrderBean.class);
                 if(StringUtil.isTrue(bean.getSuccess())){
                     mOrderListAdapter.addDatas(bean.getOrders());
+                    reason=bean.getReason();
                 }else{
                     T.show(OrderActivity.this,bean.getMessage());
                 }
@@ -79,6 +87,25 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         if(v == mLeftIm){
             finish();
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if(StringUtil.isEmpty(orders.get(position).getIsAccept())){
+            return;
+        }
+       else if(StringUtil.isTrue(orders.get(position).getIsAccept()))
+        {return;}
+        else{
+            new AlertDialog.Builder(OrderActivity.this)
+                    .setTitle("拒绝理由")
+
+                    .setMessage(reason)
+
+                    .setPositiveButton("确定", null)
+
+                    .show();
         }
     }
 }

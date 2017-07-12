@@ -13,6 +13,7 @@ public class OrderBean{
     private List<Order> sickOrders;
     private String Success;
     private String Message;
+    private String Reason;
 
     public List<Order> getOrders() {
         return sickOrders;
@@ -31,10 +32,19 @@ public class OrderBean{
         return Message;
     }
 
+
     public void setMessage(String message) {
         Message = message;
     }
     public void setOrders(List<Order> sickOrders) {
         this.sickOrders = sickOrders;
+    }
+
+    public String getReason() {
+        return Reason;
+    }
+
+    public void setReason(String reason) {
+        Reason = reason;
     }
 }

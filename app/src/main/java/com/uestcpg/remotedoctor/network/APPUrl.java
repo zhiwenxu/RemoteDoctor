@@ -15,6 +15,6 @@ public class APPUrl {
     public static final String GET_DOCTOR_INFO_URL = SERVER_URL+"getDoctorInfo";//获取医生信息
     public static final String ORDER_YY_URL = SERVER_URL+"orderYy";//发起预约
     public static final String GET_OREDER_URL = SERVER_URL+"sickOrder";//获取预约信息
-    public static final String CHECK_ORDER_URL = SERVER_URL+"sickCheckOrder";//获取预约信息
+    public static final String CHECK_ORDER_URL = SERVER_URL+"sickCheckOrder";//获取是否被接受预约信息
 
 }
