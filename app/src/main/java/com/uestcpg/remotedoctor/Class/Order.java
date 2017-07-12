@@ -11,6 +11,7 @@ public class Order {
     private String dateTime;
     private String IsAccept;
     private String doctorPhone;
+    private String reason;
 
     public String getName() {
         return name;
@@ -50,5 +51,13 @@ public class Order {
 
     public void setDoctorPhone(String doctorPhone) {
         this.doctorPhone = doctorPhone;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

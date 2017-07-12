@@ -1,6 +1,7 @@
 package com.uestcpg.remotedoctor.activitys.main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,12 +10,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.uestcpg.remotedoctor.R;
+import com.uestcpg.remotedoctor.app.BaseApplication;
 import com.uestcpg.remotedoctor.app.BaseFragmentActivity;
 import com.uestcpg.remotedoctor.fragments.tab.DoctorListFragment;
 import com.uestcpg.remotedoctor.fragments.tab.MeFragment;
@@ -185,5 +189,24 @@ public class MainActivity extends BaseFragmentActivity implements ViewPager.OnPa
         if(v == mMeLayout){
             mViewPager.setCurrentItem(2,false);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+            new AlertDialog.Builder(this).setTitle("是否退出？").setPositiveButton("退出", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    BaseApplication.exit();
+                }
+            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

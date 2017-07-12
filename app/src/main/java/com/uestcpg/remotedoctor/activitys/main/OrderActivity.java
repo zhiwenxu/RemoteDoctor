@@ -44,7 +44,6 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener,
     private List<Order> orders = new ArrayList<>();
 
     private StringUtil isaccept;
-    private String reason;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +70,6 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener,
                 OrderBean bean = GsonHelper.getGson().fromJson(result,OrderBean.class);
                 if(StringUtil.isTrue(bean.getSuccess())){
                     mOrderListAdapter.addDatas(bean.getOrders());
-                    reason=bean.getReason();
                 }else{
                     T.show(OrderActivity.this,bean.getMessage());
                 }
@@ -95,17 +93,14 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener,
         if(StringUtil.isEmpty(orders.get(position).getIsAccept())){
             return;
         }
-       else if(StringUtil.isTrue(orders.get(position).getIsAccept()))
-        {return;}
-        else{
-            new AlertDialog.Builder(OrderActivity.this)
-                    .setTitle("拒绝理由")
+       if(!StringUtil.isTrue(orders.get(position).getIsAccept()))
+       {
+           String reason = orders.get(position).getReason();
 
-                    .setMessage(reason)
-
-                    .setPositiveButton("确定", null)
-
-                    .show();
-        }
+           new AlertDialog.Builder(OrderActivity.this).setTitle(R.string.reject_reason)
+                   .setMessage(reason)
+                   .setPositiveButton(R.string.dialog_comfire, null)
+                   .show();
+       }
     }
 }

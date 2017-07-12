@@ -40,4 +40,6 @@
     <string name="order_accept">接受预约</string>
     <string name="order_reject">拒绝预约</string>
     <string name="logining_tip">登录中...</string>
+    <string name="dialog_comfire">确定</string>
+    <string name="reject_reason">拒绝理由</string>
 </resources>

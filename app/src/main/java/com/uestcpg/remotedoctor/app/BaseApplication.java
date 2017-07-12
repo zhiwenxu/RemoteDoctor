@@ -87,6 +87,7 @@ public class BaseApplication extends Application {
     public static void exit(){
         ActivityExit();
         FragmentActivityExit();
+        System.exit(0);
     }
 
 
