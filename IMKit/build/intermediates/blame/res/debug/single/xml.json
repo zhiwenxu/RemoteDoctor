@@ -2,9 +2,5 @@
     {
         "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\debug\\xml\\rc_file_path.xml",
         "source": "E:\\workspace\\RemoteDoctor\\IMKit\\src\\main\\res\\xml\\rc_file_path.xml"
-    },
-    {
-        "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\debug\\xml\\rc_file_path.xml",
-        "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\src\\main\\res\\xml\\rc_file_path.xml"
     }
 ]
