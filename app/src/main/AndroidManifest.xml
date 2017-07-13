@@ -23,6 +23,8 @@
         <activity android:name=".fragments.tab.MeFragmentChange"/>
         <activity android:name=".activitys.main.OrderActivity"/>
         <activity android:name=".activitys.main.DoctorInfoActivity"/>
+        <activity android:name=".activitys.main.PhotoViewActivity"/>
+        <activity android:name=".activitys.main.SickRecordActivity"/>
         <activity android:name=".activitys.main.ConversationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

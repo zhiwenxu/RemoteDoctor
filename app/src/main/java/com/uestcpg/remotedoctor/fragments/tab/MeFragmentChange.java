@@ -58,6 +58,7 @@ public class MeFragmentChange extends BaseActivity implements View.OnClickListen
         Change_Name.setText(getIntent().getStringExtra("name"));
         Change_desctiption.setText(getIntent().getStringExtra("description"));
         Confirm_Change_btn.setOnClickListener(this);
+        mLeftIm.setOnClickListener(this);
     }
 
     private void ConfirmChange(){

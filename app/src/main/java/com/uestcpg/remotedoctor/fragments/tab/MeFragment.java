@@ -16,6 +16,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.squareup.okhttp.Request;
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.activitys.main.OrderActivity;
+import com.uestcpg.remotedoctor.activitys.main.SickRecordActivity;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.beans.SickInfoBean;
 import com.uestcpg.remotedoctor.network.APPUrl;
@@ -46,6 +47,8 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     RelativeLayout mSickInfoLayout;
     @InjectView(R.id.order_layout)
     RelativeLayout mOrderLayout;
+    @InjectView(R.id.sick_record_layout)
+    RelativeLayout mSickRecordLayout;
 
     public static MeFragment getInstance(){
         return new MeFragment();
@@ -92,6 +95,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     private void init(){
         mSickInfoLayout.setOnClickListener(this);
         mOrderLayout.setOnClickListener(this);
+        mSickRecordLayout.setOnClickListener(this);
     }
 
     private void ChangeInfomation(){
@@ -108,6 +112,10 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         }
         if(v == mOrderLayout){
             Intent intent = new Intent(getActivity(), OrderActivity.class);
+            startActivity(intent);
+        }
+        if(v == mSickRecordLayout){
+            Intent intent = new Intent(getActivity(), SickRecordActivity.class);
             startActivity(intent);
         }
     }

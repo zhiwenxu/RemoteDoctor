@@ -16,24 +16,24 @@
         "source": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_icon_rt_location_marker.xml"
     },
     {
-        "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_item_group_conversation.xml",
-        "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_item_group_conversation.xml"
+        "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_item_group_conversation.xml",
+        "source": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_item_group_conversation.xml"
     },
     {
         "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_item_public_service_message.xml",
         "source": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_item_public_service_message.xml"
     },
     {
-        "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_item_group_conversation.xml",
-        "source": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_item_group_conversation.xml"
-    },
-    {
-        "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_icon_rt_location_marker.xml",
-        "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_icon_rt_location_marker.xml"
+        "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_item_group_conversation.xml",
+        "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_item_group_conversation.xml"
     },
     {
         "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_ac_file_manager.xml",
         "source": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_ac_file_manager.xml"
+    },
+    {
+        "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_icon_rt_location_marker.xml",
+        "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_icon_rt_location_marker.xml"
     },
     {
         "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_ext_plugin_item.xml",
@@ -140,12 +140,12 @@
         "source": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_item_image_message.xml"
     },
     {
-        "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_picprev_activity.xml",
-        "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_picprev_activity.xml"
-    },
-    {
         "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_item_discussion_notification_message.xml",
         "source": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_item_discussion_notification_message.xml"
+    },
+    {
+        "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_picprev_activity.xml",
+        "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_picprev_activity.xml"
     },
     {
         "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_wi_notice.xml",
@@ -188,12 +188,12 @@
         "source": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_ext_menu_container.xml"
     },
     {
-        "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_notification_realtime_location.xml",
-        "source": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_notification_realtime_location.xml"
-    },
-    {
         "merged": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_fr_public_service_inf.xml",
         "source": "E:\\workspace\\AS\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_fr_public_service_inf.xml"
+    },
+    {
+        "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_notification_realtime_location.xml",
+        "source": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_notification_realtime_location.xml"
     },
     {
         "merged": "E:\\workspace\\RemoteDoctor\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_item_text_message_evaluate.xml",

@@ -95,6 +95,7 @@ public class DoctorInfoActivity extends BaseActivity implements View.OnClickList
                 OkHttpManager.getInstance()._postAsyn(APPUrl.ORDER_YY_URL,ParamUtil.getParams(), new OkHttpCallBack() {
                     @Override
                     public void onRespone(String result) {
+                        Log.e("aa",result);
                         RespondBean bean = GsonHelper.getGson().fromJson(result,RespondBean.class);
                         T.show(DoctorInfoActivity.this,bean.getMessage());
                     }
