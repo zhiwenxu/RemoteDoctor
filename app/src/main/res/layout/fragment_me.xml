@@ -105,7 +105,7 @@
             android:layout_marginLeft="5dp"
             android:textColor="@color/app_black"/>
         <LinearLayout
-            android:id="@+id/sick_record_ll_layout"
+            android:id="@+id/sick_record_press_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
