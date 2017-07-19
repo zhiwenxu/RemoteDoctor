@@ -42,4 +42,16 @@
     <string name="logining_tip">登录中...</string>
     <string name="dialog_comfire">确定</string>
     <string name="reject_reason">拒绝理由</string>
+
+    <string name="reservation_name">姓名</string>
+    <string name="reservation_sex">性别</string>
+    <string name="reservation_old">年龄</string>
+    <string name="reservation_current_symptom">目前症状</string>
+    <string name="reservation_begin_sick_time">开始发病时间</string>
+    <string name="reservation_taken_treatment">采取过何种治疗</string>
+    <string name="reservation_taken_place">曾在何地就医</string>
+    <string name="reservation_height">身高(单位:厘米)</string>
+    <string name="reservation_weight">体重(单位:斤)</string>
+    <string name="reservation_career">职业</string>
+    <string name="reservation_time_btn">确定预约时间</string>
 </resources>

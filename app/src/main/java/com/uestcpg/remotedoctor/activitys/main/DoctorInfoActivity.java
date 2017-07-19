@@ -1,5 +1,6 @@
 package com.uestcpg.remotedoctor.activitys.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -84,29 +85,32 @@ public class DoctorInfoActivity extends BaseActivity implements View.OnClickList
 
     //发起预约
     private void orderYy(){
-        AlertView alertView = new AlertView("预约时间",this, new OnConfirmeListener() {
-            @Override
-            public void result(String s) {
-                ParamUtil.put("token", AppStatus.getToken());
-                ParamUtil.put("sickPhone",AppStatus.getUserid());
-                ParamUtil.put("doctorPhone",doctorPhone);
-                ParamUtil.put("sickName",AppStatus.getUsername());
-                ParamUtil.put("dateTime",s);
-                OkHttpManager.getInstance()._postAsyn(APPUrl.ORDER_YY_URL,ParamUtil.getParams(), new OkHttpCallBack() {
-                    @Override
-                    public void onRespone(String result) {
-                        Log.e("aa",result);
-                        RespondBean bean = GsonHelper.getGson().fromJson(result,RespondBean.class);
-                        T.show(DoctorInfoActivity.this,bean.getMessage());
-                    }
-                    @Override
-                    public void onError(Request request, Exception e) {
-
-                    }
-                });
-            }
-        });
-        alertView.show();
+//        AlertView alertView = new AlertView("预约时间",this, new OnConfirmeListener() {
+//            @Override
+//            public void result(String s) {
+//                ParamUtil.put("token", AppStatus.getToken());
+//                ParamUtil.put("sickPhone",AppStatus.getUserid());
+//                ParamUtil.put("doctorPhone",doctorPhone);
+//                ParamUtil.put("sickName",AppStatus.getUsername());
+//                ParamUtil.put("dateTime",s);
+//                OkHttpManager.getInstance()._postAsyn(APPUrl.ORDER_YY_URL,ParamUtil.getParams(), new OkHttpCallBack() {
+//                    @Override
+//                    public void onRespone(String result) {
+//                        Log.e("aa",result);
+//                        RespondBean bean = GsonHelper.getGson().fromJson(result,RespondBean.class);
+//                        T.show(DoctorInfoActivity.this,bean.getMessage());
+//                    }
+//                    @Override
+//                    public void onError(Request request, Exception e) {
+//
+//                    }
+//                });
+//            }
+//        });
+//        alertView.show();
+        Intent intent = new Intent(DoctorInfoActivity.this, ReservationInfoActivity.class);
+        intent.putExtra("doctorPhone",doctorPhone);
+        startActivity(intent);
     }
 
     private void checkOrder(){

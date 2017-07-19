@@ -20,6 +20,7 @@
         <activity android:name=".activitys.start.RegisterActivity">
         </activity>
         <activity android:name=".activitys.main.MainActivity"/>
+        <activity android:name=".activitys.main.ReservationInfoActivity"/>
         <activity android:name=".fragments.tab.MeFragmentChange"/>
         <activity android:name=".activitys.main.OrderActivity"/>
         <activity android:name=".activitys.main.DoctorInfoActivity"/>
