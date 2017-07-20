@@ -17,6 +17,7 @@ import com.uestcpg.remotedoctor.network.GsonHelper;
 import com.uestcpg.remotedoctor.network.OkHttpCallBack;
 import com.uestcpg.remotedoctor.network.OkHttpManager;
 import com.uestcpg.remotedoctor.utils.ParamUtil;
+import com.uestcpg.remotedoctor.utils.StringUtil;
 import com.uestcpg.remotedoctor.utils.T;
 import com.uestcpg.remotedoctor.views.library.AlertView;
 import com.uestcpg.remotedoctor.views.library.OnConfirmeListener;
@@ -73,22 +74,58 @@ public class ReservationInfoActivity extends BaseActivity implements View.OnClic
 
     private void Reservation(){
 
-//        String pwd = rPasswordEdit.getText().toString();
-//        String phone = rPhoneEdit.getText().toString();
-//        String name = rNameEdit.getText().toString();
-//
-//        if(StringUtil.isEmpty(phone)){
-//            T.show(this,getString(R.string.account_null_tip));
-//            return;
-//        }
-//        if(StringUtil.isEmpty(pwd)){
-//            T.show(this,getString(R.string.pwd_null_tip));
-//            return;
-//        }
-//        if(StringUtil.isEmpty(name)){
-//            T.show(this,getString(R.string.name_null_tip));
-//            return;
-//        }
+        final String name = Reservation_Name.getText().toString();
+        final String sex = Reservation_Sex.getText().toString();
+        final String old = Reservation_Old.getText().toString();
+        final String career = Reservation_Career.getText().toString();
+        final String height = Reservation_Height.getText().toString();
+        final String weight = Reservation_Weight.getText().toString();
+        final String current_symptom = Reservation_Current_Symptom.getText().toString();
+        final String begin_sick_time = Reservation_Begin_Sick_Time.getText().toString();
+        final String taken_treatment = Reservation_Taken_Treatment.getText().toString();
+        final String taken_place = Reservation_Taken_Place.getText().toString();
+
+
+        if(StringUtil.isEmpty(name)){
+            T.show(this,getString(R.string.account_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(sex)){
+            T.show(this,getString(R.string.sex_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(old)){
+            T.show(this,getString(R.string.old_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(career)){
+            T.show(this,getString(R.string.career_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(height)){
+            T.show(this,getString(R.string.height_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(weight)){
+            T.show(this,getString(R.string.weight_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(current_symptom)){
+            T.show(this,getString(R.string.current_symptom_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(begin_sick_time)){
+            T.show(this,getString(R.string.begin_sick_time_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(taken_treatment)){
+            T.show(this,getString(R.string.taken_treatment_null_tip));
+            return;
+        }
+        if(StringUtil.isEmpty(taken_place)){
+            T.show(this,getString(R.string.taken_place_null_tip));
+            return;
+        }
 //        String pwdMD5 = MD5Util.stringMD5(pwd);
 //        ParamUtil.put("phone",phone);
 //        ParamUtil.put("password",pwdMD5);
@@ -113,15 +150,26 @@ public class ReservationInfoActivity extends BaseActivity implements View.OnClic
             public void result(String s) {
                 ParamUtil.put("token", AppStatus.getToken());
                 ParamUtil.put("sickPhone",AppStatus.getUserid());
-               // ParamUtil.put("doctorPhone",doctorPhone);
-                ParamUtil.put("sickName",AppStatus.getUsername());
+                ParamUtil.put("doctorPhone",doctorPhone);
+                ParamUtil.put("sickName",name);
                 ParamUtil.put("dateTime",s);
+                ParamUtil.put("sickAge",old);
+                ParamUtil.put("sickSex",sex);
+                ParamUtil.put("sickWork",career);
+                ParamUtil.put("sickHeight",height);
+                ParamUtil.put("sickWeight",weight);
+                ParamUtil.put("sickZz",current_symptom);
+                ParamUtil.put("sickFbTime",begin_sick_time);
+                ParamUtil.put("sickZl",taken_treatment);
+                ParamUtil.put("sickAddrJy",taken_place);
+
+
                 OkHttpManager.getInstance()._postAsyn(APPUrl.ORDER_YY_URL,ParamUtil.getParams(), new OkHttpCallBack() {
                     @Override
                     public void onRespone(String result) {
                         Log.e("aa",result);
                         RespondBean bean = GsonHelper.getGson().fromJson(result,RespondBean.class);
-                        //T.show(DoctorInfoActivity.this,bean.getMessage());
+                        T.show(ReservationInfoActivity.this,bean.getMessage());
                     }
                     @Override
                     public void onError(Request request, Exception e) {

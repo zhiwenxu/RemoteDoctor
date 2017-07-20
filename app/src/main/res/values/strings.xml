@@ -48,10 +48,22 @@
     <string name="reservation_old">年龄</string>
     <string name="reservation_current_symptom">目前症状</string>
     <string name="reservation_begin_sick_time">开始发病时间</string>
-    <string name="reservation_taken_treatment">采取过何种治疗</string>
-    <string name="reservation_taken_place">曾在何地就医</string>
+    <string name="reservation_taken_treatment">采取过何种治疗（若没有填无）</string>
+    <string name="reservation_taken_place">曾在何地就医（若没有填无）</string>
     <string name="reservation_height">身高(单位:厘米)</string>
     <string name="reservation_weight">体重(单位:斤)</string>
     <string name="reservation_career">职业</string>
     <string name="reservation_time_btn">确定预约时间</string>
+    <string name="sex_null_tip">性别不能为空</string>
+    <string name="old_null_tip">年龄不能为空</string>
+    <string name="career_null_tip">职业不能为空</string>
+    <string name="height_null_tip">身高不能为空</string>
+    <string name="weight_null_tip">体重不能为空</string>
+    <string name="current_symptom_null_tip">目前症状不能为空</string>
+    <string name="begin_sick_time_null_tip">开始发病时间不能为空</string>
+    <string name="taken_treatment_null_tip">采取过何种治疗不能为空</string>
+    <string name="taken_place_null_tip">曾在何地就医不能为空</string>
+
+    <string name="treatment">治疗或建议方案</string>
+    <string name="reservation_confirm_btn">确定</string>
 </resources>
