@@ -1,9 +1,11 @@
 package com.uestcpg.remotedoctor.fragments.tab;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +32,15 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * Created by dmsoft on 2017/6/14.
  *
  */
 
-public class DoctorListFragment extends Fragment implements View.OnClickListener,AdapterView.OnItemClickListener{
+public class DoctorListFragment extends Fragment implements View.OnClickListener,AdapterView.OnItemClickListener,RongIM.UserInfoProvider{
 
     @InjectView(R.id.friends_list)
     ListView mFriendsList;
@@ -59,6 +63,7 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     }
 
     private void init(){
+        RongIM.setUserInfoProvider(this,true);
         mDoctorListAdapter = new DoctorListAdapter(getActivity(),doctors);
         mFriendsList.setAdapter(mDoctorListAdapter);
         mFriendsList.setOnItemClickListener(this);
@@ -95,5 +100,20 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
         Intent intent = new Intent(getContext(), DoctorInfoActivity.class);
         intent.putExtra("doctorPhone",doctors.get(position).getPhone());
         startActivity(intent);
+    }
+
+    @Override
+    public UserInfo getUserInfo(String s) {
+
+        Log.e("s",s);
+        for(Doctor doctor : doctors){
+            Log.e("do",doctor.getPhone()+"|"+doctor.getName()+"|"+doctor.getPhoto());
+
+            return new UserInfo(doctor.getPhone(),doctor.getName(), Uri.parse(doctor.getPhoto()));
+        }
+        if(AppStatus.getUsername() != null){
+            return new UserInfo(AppStatus.getUserid(),AppStatus.getUsername(),Uri.parse(AppStatus.getUrl()));
+        }
+        return null;
     }
 }

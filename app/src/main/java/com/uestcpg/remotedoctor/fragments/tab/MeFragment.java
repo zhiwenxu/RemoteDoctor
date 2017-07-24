@@ -1,6 +1,7 @@
 package com.uestcpg.remotedoctor.fragments.tab;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,8 @@ import com.uestcpg.remotedoctor.utils.T;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * Created by dmsoft on 2017/6/14.
@@ -78,6 +81,8 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                 SickInfoBean bean = GsonHelper.getGson().fromJson(result,SickInfoBean.class);
                 if(StringUtil.isTrue(bean.getSuccess())){
                     AppStatus.setUsername(bean.getName());
+                    AppStatus.setUrl(bean.getIconUrl());
+                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(AppStatus.getUserid(), bean.getName(), Uri.parse(bean.getIconUrl())));
                     mSinmpleDraweeView.setImageURI(bean.getIconUrl());
                     mNameTv.setText(bean.getName());
                     mDescription.setText(bean.getDesception());
