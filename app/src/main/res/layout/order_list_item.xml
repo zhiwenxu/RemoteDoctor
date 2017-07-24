@@ -60,6 +60,18 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:background="@drawable/order_accept" />
+        <TextView
+            android:id="@+id/order_detail_btn"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/app_white"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/order_accept_icon"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/green_btn_bg"
+            android:text="详情"/>
 
     </RelativeLayout>
 </LinearLayout>

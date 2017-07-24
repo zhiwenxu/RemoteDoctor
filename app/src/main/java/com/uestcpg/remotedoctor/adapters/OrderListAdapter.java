@@ -1,6 +1,7 @@
 package com.uestcpg.remotedoctor.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.uestcpg.remotedoctor.Class.Order;
 import com.uestcpg.remotedoctor.R;
+import com.uestcpg.remotedoctor.activitys.main.SeeReservationInfoActivity;
 import com.uestcpg.remotedoctor.utils.StringUtil;
 
 import java.text.ParseException;
@@ -71,6 +73,7 @@ public class OrderListAdapter extends BaseAdapter{
             viewHolder.dateTimeTv = (TextView)convertView.findViewById(R.id.order_datetime);
             viewHolder.nameTv = (TextView)convertView.findViewById(R.id.order_name);
             viewHolder.tagImage = (ImageView) convertView.findViewById(R.id.order_accept_icon);
+            viewHolder.detailBtn = (TextView) convertView.findViewById(R.id.order_detail_btn);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -83,6 +86,9 @@ public class OrderListAdapter extends BaseAdapter{
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        final Order order = orders.get(position);
+
         viewHolder.iconImage.setImageURI(orders.get(position).getIconUrl());
         viewHolder.nameTv.setText(orders.get(position).getName());
         viewHolder.dateTimeTv.setText(f.format(date));
@@ -98,8 +104,35 @@ public class OrderListAdapter extends BaseAdapter{
             viewHolder.acceptTv.setText(R.string.order_reject);
             viewHolder.tagImage.setBackgroundResource(R.drawable.order_reject);
         }
+
+        //点击详情
+        viewHolder.detailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent intent = new Intent(mContext, SeeReservationInfoActivity.class);
+                intent.putExtra("name",order.getSickName());
+                intent.putExtra("sex",order.getSickSex());
+                intent.putExtra("old",order.getSickAge());
+                intent.putExtra("career",order.getSickWork());
+                intent.putExtra("height",order.getSickHeight());
+                intent.putExtra("weight",order.getSickWeight());
+                intent.putExtra("current_symptom",order.getSickZz());
+                intent.putExtra("begin_sick_time",order.getSickFbTime());
+                intent.putExtra("taken_treatment",order.getSickZl());
+                intent.putExtra("taken_place",order.getSickAddrJy());
+                intent.putExtra("doctor_suggest",order.getDoctorSuggest());
+                //Log.i("AD",order.getDoctorSuggest());
+
+                mContext.startActivity(intent);
+            }
+        });
+
         return convertView;
     }
+
+
 
     class ViewHolder{
         SimpleDraweeView iconImage;
@@ -107,5 +140,6 @@ public class OrderListAdapter extends BaseAdapter{
         TextView acceptTv;
         TextView dateTimeTv;
         ImageView tagImage;
+        TextView detailBtn;
     }
 }
