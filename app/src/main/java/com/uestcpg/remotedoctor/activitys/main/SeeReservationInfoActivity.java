@@ -79,7 +79,7 @@ public class SeeReservationInfoActivity extends BaseActivity implements View.OnC
         Rdoctor_suggest = getIntent().getStringExtra("doctor_suggest");
         Reservation_confirm_Btn.setOnClickListener(this);
         Reservation();
-        Log.i("A123",Rname);
+        //Log.i("A123",Rdoctor_suggest);
     }
 
     private void getInfo(){
