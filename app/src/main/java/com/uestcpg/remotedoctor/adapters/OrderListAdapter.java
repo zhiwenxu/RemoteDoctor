@@ -123,6 +123,7 @@ public class OrderListAdapter extends BaseAdapter{
                 intent.putExtra("taken_treatment",order.getSickZl());
                 intent.putExtra("taken_place",order.getSickAddrJy());
                 intent.putExtra("doctor_suggest",order.getDoctorSuggest());
+                //Log.i("AD",order.getDoctorSuggest());
 
                 mContext.startActivity(intent);
             }
