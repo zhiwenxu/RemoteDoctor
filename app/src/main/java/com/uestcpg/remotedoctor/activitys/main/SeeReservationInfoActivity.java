@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.app.BaseActivity;
@@ -21,27 +22,27 @@ public class SeeReservationInfoActivity extends BaseActivity implements View.OnC
     @InjectView(R.id.see_reservation_confirm_btn)
     Button Reservation_confirm_Btn;
     @InjectView(R.id.see_reservation_name)
-    EditText Reservation_Name;
+    TextView Reservation_Name;
     @InjectView(R.id.see_reservation_sex)
-    EditText Reservation_Sex;
+    TextView Reservation_Sex;
     @InjectView(R.id.see_reservation_old)
-    EditText Reservation_Old;
+    TextView Reservation_Old;
     @InjectView(R.id.see_reservation_career)
-    EditText Reservation_Career;
+    TextView Reservation_Career;
     @InjectView(R.id.see_reservation_height)
-    EditText Reservation_Height;
+    TextView Reservation_Height;
     @InjectView(R.id.see_reservation_weight)
-    EditText Reservation_Weight;
+    TextView Reservation_Weight;
     @InjectView(R.id.see_reservation_current_symptom)
-    EditText Reservation_Current_Symptom;
+    TextView Reservation_Current_Symptom;
     @InjectView(R.id.see_reservation_begin_sick_time)
-    EditText Reservation_Begin_Sick_Time;
+    TextView Reservation_Begin_Sick_Time;
     @InjectView(R.id.see_reservation_taken_treatment)
-    EditText Reservation_Taken_Treatment;
+    TextView Reservation_Taken_Treatment;
     @InjectView(R.id.see_reservation_taken_place)
-    EditText Reservation_Taken_Place;
+    TextView Reservation_Taken_Place;
     @InjectView(R.id.see_reservation_doctor_suggest)
-    EditText Reservation_Doctor_Suggest;
+    TextView Reservation_Doctor_Suggest;
 
     private String Rname;
     private String Rsex;

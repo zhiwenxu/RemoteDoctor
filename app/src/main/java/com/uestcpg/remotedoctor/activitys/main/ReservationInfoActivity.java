@@ -17,6 +17,7 @@ import com.uestcpg.remotedoctor.network.GsonHelper;
 import com.uestcpg.remotedoctor.network.OkHttpCallBack;
 import com.uestcpg.remotedoctor.network.OkHttpManager;
 import com.uestcpg.remotedoctor.utils.ParamUtil;
+import com.uestcpg.remotedoctor.utils.SPUtil;
 import com.uestcpg.remotedoctor.utils.StringUtil;
 import com.uestcpg.remotedoctor.utils.T;
 import com.uestcpg.remotedoctor.views.library.AlertView;
@@ -66,8 +67,14 @@ public class ReservationInfoActivity extends BaseActivity implements View.OnClic
         init();
     }
     private void init(){
-        doctorPhone = getIntent().getStringExtra("doctorPhone");
         ButterKnife.inject(this);
+        doctorPhone = getIntent().getStringExtra("doctorPhone");
+        Reservation_Name.setText(SPUtil.getReservation_Name(this));
+        Reservation_Sex.setText(SPUtil.getReservation_Sex(this));
+        Reservation_Old.setText(SPUtil.getReservation_Old(this));
+        Reservation_Career.setText(SPUtil.getReservation_Career(this));
+        Reservation_Height.setText(SPUtil.getReservation_Height(this));
+        Reservation_Weight.setText(SPUtil.getReservation_Weight(this));
         Reservation_Time_Btn.setOnClickListener(this);
     }
 
@@ -126,24 +133,7 @@ public class ReservationInfoActivity extends BaseActivity implements View.OnClic
             T.show(this,getString(R.string.taken_place_null_tip));
             return;
         }
-//        String pwdMD5 = MD5Util.stringMD5(pwd);
-//        ParamUtil.put("phone",phone);
-//        ParamUtil.put("password",pwdMD5);
-//        ParamUtil.put("name",name);
-//        ParamUtil.put("doctor","false");
-//        OkHttpManager.getInstance()._postAsyn(APPUrl.REGISTER_URL,ParamUtil.getParams()
-//                , new OkHttpCallBack() {
-//                    @Override
-//                    public void onRespone(String result) {
-//                        RegisterBean bean = GsonHelper.getGson().fromJson(result,RegisterBean.class);
-//                        T.show(RegisterActivity.this,bean.getMessage());
-//                        finish();
-//                    }
-//                    @Override
-//                    public void onError(Request request, Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                });
+
 
         AlertView alertView = new AlertView("预约时间",this, new OnConfirmeListener() {
             @Override
@@ -170,6 +160,12 @@ public class ReservationInfoActivity extends BaseActivity implements View.OnClic
                         Log.e("aa",result);
                         RespondBean bean = GsonHelper.getGson().fromJson(result,RespondBean.class);
                         T.show(ReservationInfoActivity.this,bean.getMessage());
+                        SPUtil.setReservation_Name(ReservationInfoActivity.this,Reservation_Name.getText().toString().trim());
+                        SPUtil.setReservation_Sex(ReservationInfoActivity.this,Reservation_Sex.getText().toString().trim());
+                        SPUtil.setReservation_Old(ReservationInfoActivity.this,Reservation_Old.getText().toString().trim());
+                        SPUtil.setReservation_Career(ReservationInfoActivity.this,Reservation_Career.getText().toString().trim());
+                        SPUtil.setReservation_Height(ReservationInfoActivity.this,Reservation_Height.getText().toString().trim());
+                        SPUtil.setReservation_Weight(ReservationInfoActivity.this,Reservation_Weight.getText().toString().trim());
                     }
                     @Override
                     public void onError(Request request, Exception e) {

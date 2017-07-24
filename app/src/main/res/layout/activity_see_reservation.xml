@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="false">
+<LinearLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,21 +13,21 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@drawable/layout_item_bg">
-        <EditText
+        <TextView
             android:id="@+id/see_reservation_name"
-            android:layout_width="60dp"
-            android:layout_height="45dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/app_edit_bg"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
-            android:inputType="textCapWords"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:textSize="14sp"
-            android:enabled="false"
+            android:inputType="textCapWords"
+            android:scrollbars="vertical"
             android:hint="@string/reservation_name"/>
 
-        <EditText
+        <TextView
             android:id="@+id/see_reservation_sex"
             android:layout_width="45dp"
             android:layout_height="45dp"
@@ -35,10 +39,9 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:textSize="14sp"
-            android:enabled="false"
             android:hint="@string/reservation_sex"/>
 
-        <EditText
+        <TextView
             android:id="@+id/see_reservation_old"
             android:layout_width="45dp"
             android:layout_height="45dp"
@@ -50,13 +53,12 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:textSize="14sp"
-            android:enabled="false"
             android:hint="@string/reservation_old"/>
 
-        <EditText
+        <TextView
             android:id="@+id/see_reservation_career"
             android:layout_width="60dp"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/app_edit_bg"
             android:layout_toRightOf="@id/see_reservation_old"
             android:layout_marginTop="20dp"
@@ -65,7 +67,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:textSize="14sp"
-            android:enabled="false"
+            android:scrollbars="vertical"
             android:hint="@string/reservation_career"/>
     </RelativeLayout>
 
@@ -73,7 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@drawable/layout_item_bg">
-        <EditText
+        <TextView
             android:id="@+id/see_reservation_height"
             android:layout_width="120dp"
             android:layout_height="45dp"
@@ -84,9 +86,8 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:textSize="14sp"
-            android:enabled="false"
             android:hint="@string/reservation_height"/>
-        <EditText
+        <TextView
             android:id="@+id/see_reservation_weight"
             android:layout_width="120dp"
             android:layout_height="45dp"
@@ -98,14 +99,13 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:textSize="14sp"
-            android:enabled="false"
             android:hint="@string/reservation_weight"/>
     </RelativeLayout>
 
-    <EditText
+    <TextView
         android:id="@+id/see_reservation_current_symptom"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/app_edit_bg"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
@@ -113,9 +113,9 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:textSize="14sp"
-        android:enabled="false"
+        android:scrollbars="vertical"
         android:hint="@string/reservation_current_symptom"/>
-    <EditText
+    <TextView
         android:id="@+id/see_reservation_begin_sick_time"
         android:layout_width="match_parent"
         android:layout_height="35dp"
@@ -126,12 +126,12 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:textSize="14sp"
-        android:enabled="false"
+        android:scrollbars="vertical"
         android:hint="@string/reservation_begin_sick_time"/>
-    <EditText
+    <TextView
         android:id="@+id/see_reservation_taken_treatment"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/app_edit_bg"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
@@ -139,12 +139,12 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:textSize="14sp"
-        android:enabled="false"
+        android:scrollbars="vertical"
         android:hint="@string/reservation_taken_treatment"/>
-    <EditText
+    <TextView
         android:id="@+id/see_reservation_taken_place"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/app_edit_bg"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
@@ -152,12 +152,12 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:textSize="14sp"
-        android:enabled="false"
+        android:scrollbars="vertical"
         android:hint="@string/reservation_taken_place"/>
-    <EditText
+    <TextView
         android:id="@+id/see_reservation_doctor_suggest"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/app_edit_bg"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
@@ -165,7 +165,7 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:textSize="14sp"
-        android:enabled="false"
+        android:scrollbars="vertical"
         android:hint="@string/treatment"/>
     <Button
         android:id="@+id/see_reservation_confirm_btn"
@@ -174,7 +174,11 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/reservation_confirm_btn"
         android:textColor="@color/app_white"
         android:background="@drawable/green_btn_bg"/>
+
+
 </LinearLayout>
+    </ScrollView>
