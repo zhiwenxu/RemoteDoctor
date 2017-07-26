@@ -14,6 +14,7 @@ import io.rong.imkit.RongIM;
 
 /**
  * Created by dmsoft on 2017/6/13.
+ *
  */
 
 public class BaseApplication extends Application {

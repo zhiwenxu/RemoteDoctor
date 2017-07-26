@@ -10,6 +10,7 @@ public class AppStatus {
     private static String rCToken;
     private static String username;
     private static String targetId;
+    private static String url;
 
     public static void setToken(String t){
         token = t;
@@ -49,5 +50,13 @@ public class AppStatus {
 
     public static void setTargetId(String targetId) {
         AppStatus.targetId = targetId;
+    }
+
+    public static String getUrl() {
+        return url;
+    }
+
+    public static void setUrl(String url) {
+        AppStatus.url = url;
     }
 }
