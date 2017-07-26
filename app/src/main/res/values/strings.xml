@@ -66,4 +66,8 @@
 
     <string name="treatment">治疗或建议方案</string>
     <string name="reservation_confirm_btn">确定</string>
+
+    <string name="view1">①在人的左手掌和手臂之间有一块凸起的骨头A（用右手的中指可以摸到），您需要在这块骨头A的正下方用笔画一个点</string>
+    <string name="view2">②如图将脉搏设备中间的孔对准所画的黑点并像戴手表一样戴好，左右的两个孔均可上下调节</string>
+
 </resources>

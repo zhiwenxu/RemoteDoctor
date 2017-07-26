@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+    <Button
+    android:id="@+id/see_how"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/app_white"
+        android:background="@drawable/green_btn_bg"
+        android:text="查看使用说明" />
+
+
+ </RelativeLayout>
+</LinearLayout>

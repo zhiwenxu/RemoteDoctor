@@ -27,6 +27,8 @@
         <activity android:name=".activitys.main.PhotoViewActivity"/>
         <activity android:name=".activitys.main.SeeReservationInfoActivity"/>
         <activity android:name=".activitys.main.SickRecordActivity"/>
+        <activity android:name=".activitys.see_how.LaunchActivity"/>
+        <activity android:name=".Bluetooth.BlueMainActivity"/>
         <activity android:name=".activitys.main.ConversationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

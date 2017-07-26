@@ -29,7 +29,7 @@ public class BaseApplication extends Application {
         instance = this;
         Fresco.initialize(this);
         RongIM.init(this);
-//        RongCloudEvent.setMyExtensionModule();
+        RongCloudEvent.setMyExtensionModule();
     }
 
 

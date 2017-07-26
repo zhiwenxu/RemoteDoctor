@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.squareup.okhttp.Request;
+import com.uestcpg.remotedoctor.Bluetooth.BlueMainActivity;
 import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.beans.RespondBean;
@@ -41,12 +42,12 @@ public class InputOrderPlugin implements IPluginModule {
 
     @Override
     public String obtainTitle(Context context) {
-        return "预约";
+        return "脉搏治疗";
     }
 
     @Override
     public void onClick(Fragment fragment, RongExtension rongExtension) {
-
+        context.startActivity(new Intent(context,BlueMainActivity.class));
     }
 
     @Override
