@@ -36,6 +36,7 @@
         <activity android:name=".activitys.see_how.LaunchActivity"/>
         <activity android:name=".Bluetooth.BlueMainActivity"
             android:theme="@style/BlueToothStyle"/>
+        <activity android:name=".Bluetooth.DeviceListActivity"/>
         <activity android:name=".activitys.main.ConversationActivity">
 
             <activity
