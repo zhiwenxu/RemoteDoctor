@@ -1,8 +1,9 @@
-package com.uestcpg.remotedoctor.Bluetooth;
+package  com.uestcpg.remotedoctor.Bluetooth;
 
 
 import android.content.Context;
 import android.os.Environment;
+import  com.uestcpg.remotedoctor.Bluetooth.common.logger.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,15 +16,24 @@ public class FileManager {
     private static final String LOG_TAG = "error";
     private String display_content = "";
     public File file;
-    private File tmp;
+    public String dir = null;
 
-    public FileManager(Context context)
+    public FileManager(Context context, String albumName)
     {
-        tmp = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        file = getAlbumStorageDir(context, albumName);
     }
 
-    public File createFile(String albumName){
+    public File getAlbumStorageDir(Context context, String albumName){
         // Get the directory for the app's private pictures directory.
+        File tmp = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        try {
+            dir = tmp.getAbsolutePath();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
         file = new File(tmp, albumName);
 //        if(!file.mkdirs()){
 //            Log.e(LOG_TAG,"Directory not created");
@@ -61,13 +71,6 @@ public class FileManager {
 //    }
 
     public void writeToFile() throws Exception
-    {
-        FileOutputStream outStream = new FileOutputStream(file);
-        outStream.write(display_content.getBytes());
-        outStream.close();
-    }
-
-    public void writeToFile(File file, String display_content) throws Exception
     {
         FileOutputStream outStream = new FileOutputStream(file);
         outStream.write(display_content.getBytes());

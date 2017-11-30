@@ -27,14 +27,31 @@ import android.os.Message;
 
 import com.uestcpg.remotedoctor.Bluetooth.common.logger.Log;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import com.uestcpg.remotedoctor.Bluetooth.FileManager;
+import com.uestcpg.remotedoctor.Bluetooth.socket.MultiClient;
+import com.uestcpg.remotedoctor.Bluetooth.socket.SocketClientThread;
+
+import com.uestcpg.remotedoctor.R;
 
 /**
  * 本类实现了蓝牙启动、管理、连接到其他设备的所有功能
@@ -47,24 +64,24 @@ public class BluetoothChatService {
     // 当创建服务器Socket时，为SDP记录命名
     private static final String NAME_SECURE = "BluetoothChatSecure";
     private static final String NAME_INSECURE = "BluetoothChatInsecure";
-//
+
+    //    private static final UUID MY_UUID_SECURE =
+//            UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
+//    private static final UUID MY_UUID_INSECURE =
+//            UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
     // 为应用设置唯一的UUID
     private static final UUID MY_UUID_SECURE =
             UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final UUID MY_UUID_INSECURE =
             UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    // Unique UUID for this application
-//    private static final UUID MY_UUID_SECURE =
-//            UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
-//    private static final UUID MY_UUID_INSECURE =
-//            UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
+
     // 定义一个蓝牙适配器
     private final BluetoothAdapter mAdapter;
 
     // 定义一个Handler，接收子线程发送的数据，并配合主线程更新UI
     private final Handler mHandler;
 
-    // 定义一个Handler，从接收线程发送数据到发送线程
+    private BluetoothDevice cr_device;
 
     // 定义一个用于安全的接收数据的线程
     private AcceptThread mSecureAcceptThread;
@@ -76,13 +93,7 @@ public class BluetoothChatService {
     private ConnectThread mConnectThread;
 
     // 定义一个用于处理连接后数据收发的线程
-    private ConnectedThread mConnectedThread;
-    private ConnectedThread mConnectedThread_r;
-    private ConnectedSendThread mConnectedSendThread;
-    private ConnectedSendThread mConnectedSendThread_r;
-
-    private ShareBuffer shareBuffer1;
-    private ShareBuffer shareBuffer2;
+    public ConnectedThread mConnectedThread;
 
     // 定义一个状态变量
     private int mState;
@@ -94,9 +105,7 @@ public class BluetoothChatService {
 
     private String filename;
 
-    private boolean isReady;
-    private BluetoothSocket current_sock;
-    private String current_socketType;
+    private ShareBuffer shareBuffer;
 
     // Constants that indicate the current connection state声明表示当前连接状态的常量
     public static final int STATE_NONE = 0;       // 未做任何操作用0表示
@@ -104,13 +113,20 @@ public class BluetoothChatService {
     public static final int STATE_CONNECTING = 2; // 监听外连时用2表示
     public static final int STATE_CONNECTED = 3;  // 当已连接其他设备时用3表示
 
+    private BlockingQueue basket;
+    private SocketClientThread socket_client;
+
+    private byte[] frame;
+    private byte[] heheda;
+    private int PACKET_SIZE;
     /**
      * 构造一个新的BluetoothChat Session
      *
      * @param context 包含了UI Acitvity的Context
      * @param handler 用于向UI Activity返回消息
      */
-    public BluetoothChatService(Context context, Handler handler) {
+    public BluetoothChatService(Context context, Handler handler, BlockingQueue basket,
+                                SocketClientThread socket_client) {
         // 初始化蓝牙适配器
         mAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -122,18 +138,33 @@ public class BluetoothChatService {
 
         // UI更新器初始化
         mHandler = handler;
-
+        this.basket = basket;
+        this.socket_client = socket_client;
 
 //        SimpleDateFormat sTimeFormat= new SimpleDateFormat("_yyyy_MM_dd_hh_mm_ss");
 //        String date = sTimeFormat.format(new Date());
 //        filename = "recv" + date + ".txt";
         filename = "recv123" + ".txt";
 
-        fileManager = new FileManager(context);
 
-        shareBuffer1 = new ShareBuffer();
-        shareBuffer2 = new ShareBuffer();
-        isReady = false;
+        fileManager = new FileManager(context,filename);
+
+        frame = new byte[10];
+        String str = "55 00 00 00 00 57 07 AA B6 97";
+        String[] items = str.trim().split(" ");
+
+        for(int i=0; i < items.length; i++)
+        {
+            frame[i] = StringHexUtils.generateByte(items[i]);
+        }
+
+        PACKET_SIZE = 100;
+        heheda = new byte[PACKET_SIZE];
+        for(int j =0; j<PACKET_SIZE / 10; j++)
+        {
+            System.arraycopy(frame, 0, heheda, j*10, 10);
+        }
+
 //        try {
 //            fileManager.writeToFile();
 //        }
@@ -153,6 +184,11 @@ public class BluetoothChatService {
 //            e.printStackTrace();
 //        }
     }
+
+    public void initSharedBuffer(ShareBuffer shareBuffer1) {
+        shareBuffer = shareBuffer1;
+    }
+
 
     /**
      * 根据当前的连接状态，更新UI标题
@@ -189,12 +225,9 @@ public class BluetoothChatService {
         }
 
         // 取消当前已运行的连接设备的进程
-        if (mConnectedThread != null && mConnectedSendThread != null) {
+        if (mConnectedThread != null) {
             mConnectedThread.cancel();
             mConnectedThread = null;
-            /**/
-            mConnectedSendThread_r.cancel();
-            mConnectedSendThread = null;
         }
 
         // 开始监听BluetoothServerSocket的线程
@@ -228,18 +261,14 @@ public class BluetoothChatService {
         }
 
         // Cancel any thread currently running a connection
-        if (mConnectedThread != null && mConnectedSendThread != null) {
+        if (mConnectedThread != null) {
             mConnectedThread.cancel();
             mConnectedThread = null;
-            /**/
-            mConnectedSendThread.cancel();
-            mConnectedSendThread = null;
         }
 
         // Start the thread to connect with the given device
         mConnectThread = new ConnectThread(device, secure);
         mConnectThread.start();
-
         // Update UI title
         updateUserInterfaceTitle();
     }
@@ -261,12 +290,9 @@ public class BluetoothChatService {
         }
 
         // Cancel any thread currently running a connection
-        if (mConnectedThread != null && mConnectedSendThread != null) {
+        if (mConnectedThread != null) {
             mConnectedThread.cancel();
             mConnectedThread = null;
-            /**/
-            mConnectedSendThread.cancel();
-            mConnectedSendThread = null;
         }
 
         // Cancel the accept thread because we only want to connect to one device
@@ -280,25 +306,12 @@ public class BluetoothChatService {
         }
 
         // Start the thread to manage the connection and perform transmissions
-        if(!isReady) {
-            current_sock = socket;
-            current_socketType = socketType;
-            isReady      = true;
-//            mConnectedThread = new ConnectedThread(socket, socketType);
-        }
-        else{
-            mConnectedThread = new ConnectedThread(socket, socketType, shareBuffer1);
-            mConnectedSendThread_r = new ConnectedSendThread(current_sock, current_socketType, shareBuffer1);
+        mConnectedThread = new ConnectedThread(socket, socketType);
+        mConnectedThread.start();
 
-            mConnectedThread_r = new ConnectedThread(current_sock, current_socketType, shareBuffer2);
-            mConnectedSendThread = new ConnectedSendThread(socket, socketType, shareBuffer2);
-
-            mConnectedThread.start();
-            mConnectedSendThread.start();
-            mConnectedThread_r.start();
-            mConnectedSendThread_r.start();
-        }
-
+//        ConnectedSendThread sendThread = new ConnectedSendThread(mConnectedThread.getWriter(), mConnectedThread.mmOutStream);
+//        sendThread.start();
+//        cr_device = device;
         // Send the name of the connected device back to the UI Activity
         Message msg = mHandler.obtainMessage(Constants.MESSAGE_DEVICE_NAME);
         Bundle bundle = new Bundle();
@@ -320,12 +333,9 @@ public class BluetoothChatService {
             mConnectThread = null;
         }
 
-        if (mConnectedThread != null && mConnectedSendThread != null) {
+        if (mConnectedThread != null) {
             mConnectedThread.cancel();
             mConnectedThread = null;
-            /**/
-            mConnectedSendThread.cancel();
-            mConnectedSendThread = null;
         }
 
         if (mSecureAcceptThread != null) {
@@ -350,11 +360,11 @@ public class BluetoothChatService {
      */
     public void write(byte[] out) {
         // Create temporary object
-        ConnectedSendThread r;
+        ConnectedThread r;
         // Synchronize a copy of the ConnectedThread
         synchronized (this) {
             if (mState != STATE_CONNECTED) return;
-            r = mConnectedSendThread;
+            r = mConnectedThread;
         }
         // Perform the write unsynchronized
         r.write(out);
@@ -470,10 +480,12 @@ public class BluetoothChatService {
                 }
             }
             Log.i(TAG, "END mAcceptThread, socket Type: " + mSocketType);
+
         }
 
         public void cancel() {
             Log.d(TAG, "Socket Type" + mSocketType + "cancel " + this);
+
             try {
                 mmServerSocket.close();
             } catch (IOException e) {
@@ -502,8 +514,14 @@ public class BluetoothChatService {
             // given BluetoothDevice
             try {
                 if (secure) {
-                    tmp = device.createRfcommSocketToServiceRecord(
-                            MY_UUID_SECURE);
+//                    tmp = device.createRfcommSocketToServiceRecord(
+//                            MY_UUID_SECURE);
+                    try {
+                        Method method = device.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
+                        tmp = (BluetoothSocket) method.invoke(device, 1);
+                    } catch (Exception e) {
+                        Log.e(TAG, "No such method.", e);
+                    }
                 } else {
                     tmp = device.createInsecureRfcommSocketToServiceRecord(
                             MY_UUID_INSECURE);
@@ -561,274 +579,17 @@ public class BluetoothChatService {
      * This thread runs during a connection with a remote device.
      * It handles all incoming and outgoing transmissions.
      */
-    private class ConnectedThread extends Thread {
-        private final BluetoothSocket mmSocket;
-        private final InputStream mmInStream;
-//        private final OutputStream mmOutStream;
-        private final int FRAMECOUNTER = 10;
-
-        private int frame_counter;
-        private int last_frame_counter;
-
-        private Timer store_timer;
-        private Timer plot_timer;
-
-        private MyTask myTask;
-        private PlotTask plotTask;
-
-        private String content;
-        private ShareBuffer shareBuffer;
-
-        private int zeros_counter;
-
-        public ConnectedThread(BluetoothSocket socket, String socketType, ShareBuffer sharebuffer) {
-            Log.d(TAG, "create ConnectedThread: " + socketType);
-            mmSocket = socket;
-            InputStream tmpIn = null;
-            OutputStream tmpOut = null;
-
-            // Get the BluetoothSocket input and output streams
-            try {
-                tmpIn = socket.getInputStream();
-//                tmpOut = socket.getOutputStream();
-            } catch (IOException e) {
-                Log.e(TAG, "temp sockets not created", e);
-            }
-
-            mmInStream = tmpIn;
-//            mmOutStream = tmpOut;
-            mState = STATE_CONNECTED;
-
-//            frame_counter = 0;
-//            last_frame_counter = frame_counter;
-//            content = "";
-
-//            store_timer = new Timer();
-//            plot_timer  = new Timer();
-//
-//            myTask      = new MyTask();
-//            plotTask    = new PlotTask();
-//
-//            store_timer.scheduleAtFixedRate(myTask, 0, 5000);
-//            plot_timer.scheduleAtFixedRate(plotTask, 0, 100);
-            shareBuffer = sharebuffer;
-            zeros_counter = 0;
-        }
-
-        public void reset()
-        {
-            try {
-                mmInStream.reset();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-         }
-
-        public void frame_gotten(int readBufferPosition, byte[] buffer)
-        {
-            frame_counter += 1;
-
-//            msg = mSendHander.obtainMessage();
-//            msg.obj = buffer;
-//            mSendHander.sendMessage(msg);
-//            if (!shareBuffer.isfull())
-//                shareBuffer.writeToBuffer(buffer);
-
-//            mHandler.obtainMessage(Constants.MESSAGE_READ, readBufferPosition, -1, buffer).sendToTarget();
-            StringBuilder line = StringHexUtils.getHexByte(buffer, 0, readBufferPosition);
-
-            content += line.toString();
-            content += "\n";
-        }
-
-        public void run() {
-            Log.i(TAG, "BEGIN mConnectedThread");
-//            byte[] buffer = new byte[20000];
-//            int buffer_cur_pos = 0;
-//
-//            int starter = 0x55;
-//            int ender   = -86;
-//
-//            boolean isStarted = false;
-//            boolean isEnded   = false;
-//            int byteCounter  = 0;
-//
-//            byte[] frame  = new byte[10];
-
-            // Keep listening to the InputStream while connected
-            while (mState == STATE_CONNECTED) {
-                try {
-                    int bytesAvailable = mmInStream.available();
-                    if(zeros_counter == 10) {
-                        reset();
-                        zeros_counter = 0;
-                    }
-
-                    if(bytesAvailable > 0)
-                    {
-                        if(!shareBuffer.isfull(bytesAvailable))
-                        {
-                            shareBuffer.writeToBuffer(mmInStream, bytesAvailable);
-                        }
-//                        byte[] packetBytes = new byte[bytesAvailable];
-//                        mmInStream.read(buffer);
-                        // str = "55 01 02 03 04 05 06 aa 12 58"
-                        // str = "55 00 00 00 00 00 00 aa 11 59"
-
-//                        for(int i=0;i<bytesAvailable;i++)
-//                        {
-//                            byte b = packetBytes[i];
-//                            if(b == starter)
-//                                isStarted = true;
-//
-//                            if(isStarted && byteCounter < FRAMECOUNTER - 3) {
-//                                frame[byteCounter] = b;
-//                            }
-//
-//                            if(b == ender && byteCounter == FRAMECOUNTER - 3)
-//                                isEnded = true;
-//
-//                            /*遇不到结尾，那么就不要前面的字节，重新找开始字节*/
-//                            if(b != ender && byteCounter == FRAMECOUNTER - 3) {
-//                                isStarted = false;
-//                                byteCounter = 0;
-//                            }
-//
-//                            if(isEnded && byteCounter < FRAMECOUNTER){
-//                                frame[byteCounter] = b;
-//                                if (byteCounter == FRAMECOUNTER - 1)
-//                                {
-//                                    byteCounter = 0;
-//                                    System.arraycopy(frame, 0, buffer, buffer_cur_pos, FRAMECOUNTER);
-//                                    buffer_cur_pos += FRAMECOUNTER;
-//                                    if(buffer_cur_pos == 100*FRAMECOUNTER) {
-//                                        frame_gotten(buffer_cur_pos, buffer);
-//                                        write(buffer);
-//                                        buffer_cur_pos = 0;
-//                                    }
-//                                }
-//                            }
-//                            if(isStarted)
-//                                byteCounter += 1;
-//                        }
-//                    }
-                        zeros_counter = 0;
-                    }
-                    else {
-                        zeros_counter++;
-                    }
-//                                if(CRC16.isCrcSuccessed(encodedBytes)) {
-//                                    content += line.toString();
-//                                    int xs = StringHexUtils.bytes_process(encodedBytes[1], encodedBytes[2]);
-//                                    StringHexUtils.bytes_process(encodedBytes[3], encodedBytes[4]);
-//                                    StringHexUtils.bytes_process(encodedBytes[5], encodedBytes[6]);
-                                }
-                catch (IOException e) {
-                    Log.e(TAG, "disconnected", e);
-                    connectionLost();
-                    break;
-                }
-            }
-        }
-//        public void run() {
-//            Log.i(TAG, "BEGIN mConnectedThread");
-//            byte[] buffer = new byte[1024];
-//            int bytes;
-//
-//            // Keep listening to the InputStream while connected
-//            while (mState == STATE_CONNECTED) {
-//                try {
-//                    // Read from the InputStream
-//                    bytes = mmInStream.read(buffer);
-//                    // Send the obtained bytes to the UI Activity
-//                    mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
-//                            .sendToTarget();
-//
-//                    msg = mSendHander.obtainMessage();
-//                    msg.obj = buffer;
-//                    mSendHander.sendMessage(msg);
-//
-//                } catch (IOException e) {
-//                    Log.e(TAG, "disconnected", e);
-//                    connectionLost();
-//                    break;
-//                }
-//            }
-//        }
-
-        /**
-         * Write to the connected OutStream.
-         *
-         * @param buffer The bytes to write
-         **/
-
-        public void write(byte[] buffer) {
-//            try {
-//                mmOutStream.write(buffer);
-
-                // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(Constants.MESSAGE_WRITE, 10, -1, buffer)
-                        .sendToTarget();
-//            } catch (IOException e) {
-//                Log.e(TAG, "Exception during write", e);
-//            }
-        }
-
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-                Log.e(TAG, "close() of connect socket failed", e);
-            }
-//            try {
-//                fileManager.writeToFile();
-//            } catch (Exception e){
-//                Log.e(TAG, "writeToFile failed", e);
-//            }
-        }
-
-        class MyTask extends java.util.TimerTask{
-            @Override
-            public void run(){
-                // TODO Auto-generated method stub
-                if(last_frame_counter == frame_counter && frame_counter > 0)
-                {
-                    SimpleDateFormat sTimeFormat= new SimpleDateFormat("_yyyy_MM_dd_hh_mm_ss");
-                    String date = sTimeFormat.format(new Date());
-                    filename = String.format("_recv_%d", frame_counter) + date + ".txt";
-                    File file = fileManager.createFile(filename);
-                    try {
-                        fileManager.writeToFile(file, content);
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                    content = "";
-                    frame_counter = last_frame_counter = 0;
-                }
-                last_frame_counter = frame_counter;
-            }
-        }
-
-        class PlotTask extends java.util.TimerTask{
-            @Override
-            public void run(){
-                int[] xs;
-                float[] ys;
-            }
-        }
-    }
-
-    private class ConnectedSendThread extends Thread {
+    public class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
+        private boolean isClose = false;
+        private BufferedInputStream reader = null;
+        private BufferedOutputStream writer = null;
         private ShareBuffer shareBuffer;
+        private Timer timer = new Timer();
 
-        public ConnectedSendThread(BluetoothSocket socket, String socketType, ShareBuffer sharebuffer) {
+        public ConnectedThread(BluetoothSocket socket, String socketType) {
             Log.d(TAG, "create ConnectedThread: " + socketType);
             mmSocket = socket;
             InputStream tmpIn = null;
@@ -838,6 +599,8 @@ public class BluetoothChatService {
             try {
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
+                reader = new BufferedInputStream(tmpIn, 16 * 1024);
+                writer = new BufferedOutputStream(tmpOut, 16 * 1024);
             } catch (IOException e) {
                 Log.e(TAG, "temp sockets not created", e);
             }
@@ -846,27 +609,38 @@ public class BluetoothChatService {
             mmOutStream = tmpOut;
             mState = STATE_CONNECTED;
 
-            shareBuffer = sharebuffer;
+            shareBuffer = Auth.shareBuffer1;
+        }
+
+        public BufferedOutputStream getWriter(){
+            return writer;
+        }
+
+        public void Close(){
+            isClose = true;
         }
 
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
-//            byte[] buffer = new byte[1024];
-//            int bytes;
-//            Looper.prepare();//准备Looper对象
-//            //在分线程中实现mSendHander，就会在分线程中处理其msg
-//            mSendHander = new Handler(){//这是用匿名内部类生成一个handler对象
-//                public void handleMessage(Message msg) {
-//                    write((byte[])msg.obj);
-//                }
-//            };
-//            //调用Looper的loop方法后，Looper对象将不断从消息队列中取出消息对象并交给handleMessage处理
-//            //没有消息时该线程会阻塞
-//            Looper.loop();
-            while (mState == STATE_CONNECTED){
-                if(!shareBuffer.isempty())
-                {
-                    shareBuffer.readFromeBuffer(mmOutStream);
+            int bytesAvailable;
+//            byte[] packages = new byte[150];
+
+            // Keep listening to the InputStream while connected
+            while (mState == STATE_CONNECTED && !isClose && Auth.AUTH_SUCCESS) {
+                try {
+                    bytesAvailable = reader.available();
+                    if (!shareBuffer.isfull(bytesAvailable)) {
+                        shareBuffer.writeToBuffer(reader, bytesAvailable);
+//                        Log.i("write_to_network buffer1", String.format("%d, Length:%d", bytesAvailable, shareBuffer.getLength()));
+                    }
+                    if (!Auth.shareBuffer2.isempty(bytesAvailable) && bytesAvailable > 0){
+                        int tmp = Auth.shareBuffer2.readAmountFromeBuffer(writer, bytesAvailable);
+                        Log.i("send_to_bluetooth buffer2", String.format("%d, Length:%d", bytesAvailable, Auth.shareBuffer2.getLength()));
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, " there is a exception disconnected", e);
+                    connectionLost();
+                    break;
                 }
             }
         }
@@ -874,97 +648,113 @@ public class BluetoothChatService {
          * Write to the connected OutStream.
          *
          * @param buffer The bytes to write
-         **/
-
-        public void write(byte[] buffer) {
-            try {
-                mmOutStream.write(buffer);
-
-                // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(Constants.MESSAGE_WRITE, 10, -1, buffer)
-                        .sendToTarget();
-            } catch (IOException e) {
-                Log.e(TAG, "Exception during write", e);
-            }
-        }
+        //         */
 
         public void cancel() {
+            if (mmInStream != null) {
+                try {
+                    mmInStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//                    mmInStream = null;
+            }
+            if (mmOutStream != null) {
+                try {
+                    mmOutStream.flush();
+                    mmOutStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//                    mmOutStream = null;
+            }
+
             try {
                 mmSocket.close();
             } catch (IOException e) {
                 Log.e(TAG, "close() of connect socket failed", e);
             }
-//            try {
-//                fileManager.writeToFile();
-//            } catch (Exception e){
-//                Log.e(TAG, "writeToFile failed", e);
+
+//            Message msg = mHandler.obtainMessage(Constants.RESTART);
+//            mHandler.sendMessage(msg);
+        }
+
+        public void write(byte[] bytes){
+            return;
+        }
+    }
+
+    private class ConnectedSendThread extends Thread{
+        private BufferedOutputStream writer;
+        private ShareBuffer shareBuffer;
+        private OutputStream mmOutStream;
+
+        public ConnectedSendThread(BufferedOutputStream writer, OutputStream mmOutStream){
+            this.writer = writer;
+            this.shareBuffer = Auth.shareBuffer2;
+            this.mmOutStream = mmOutStream;
+        }
+
+        public void run(){
+//            Timer timer = new Timer();
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        byte[] tmp = new byte[]{0x55, 0, 0, 0, 0, 0, 0, -86, 0, 0};
+//                        writer.write(tmp);
+//                    }
+//                    catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }, 0, 20);
+
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        if (!shareBuffer.isempty(100)){
+                            int tmp = shareBuffer.readAmountFromeBuffer(writer, 100);
+                            Log.i("sendtobluetooth", String.format("%d", tmp));
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, " there is a exception disconnected", e);
+//                    connectionLost();
+//                        break;
+                    }
+                }
+            }, 0, 10);
+
+//
+//           new Timer().schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        writer.flush();
+//                    } catch (Exception e) {
+//                        Log.e(TAG, " there is a exception disconnected", e);
+////                    connectionLost();
+////                        break;
+//                    }
+//                }
+//            }, 0*1000, 1*1000);
+
+//            while (mState == STATE_CONNECTED)
+//            {
+//                try {
+//                    if (!shareBuffer.isempty()){
+//                        int tmp = shareBuffer.readFromeBuffer(writer);
+//                        writer.flush();
+//                        Log.i("sendtobluetooth", String.format("%d", tmp));
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    Log.e(TAG, " there is a exception disconnected", e);
+////                    connectionLost();
+//                    break;
+//                }
 //            }
         }
     }
-
-    class ShareBuffer{
-        private final int AMOUNT    = 1;
-        private final int ONETIMELENG = 1000;
-        private int amount;
-        private byte[] buffer;
-
-        private int front;
-        private int behind;
-
-        public ShareBuffer(){
-            buffer = new byte[AMOUNT*ONETIMELENG];
-            amount = AMOUNT* ONETIMELENG;
-
-            front = 0;
-            behind = 0;
-        }
-
-        public synchronized boolean isfull(int length){
-            return (front - length) % amount == behind;
-        }
-
-        public synchronized boolean isempty(){
-            return front == behind;
-        }
-
-        public synchronized void writeToBuffer(InputStream mmInStream, int length){
-//            System.arraycopy(frames, 0, buffer, behind, length);
-            try {
-                if (behind + length > amount) {
-                    mmInStream.read(buffer, behind, amount - behind);
-                    mmInStream.read(buffer, 0, length - amount + behind);
-                }
-                else{
-                    mmInStream.read(buffer, 0, length);
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            behind += length;
-            behind = behind % amount;
-        }
-
-        public synchronized void readFromeBuffer(OutputStream mmOutStream){
-            int current_length = (behind - front) % amount;
-            try {
-                if (behind < front) {
-                    mmOutStream.write(buffer, front, amount - front);
-                    mmOutStream.write(buffer, 0, current_length - amount + front);
-                }
-                else{
-                    mmOutStream.write(buffer, front, current_length);
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-            front += current_length;
-            front = front % amount;
-        }
-    }
-
 }
