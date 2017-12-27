@@ -43,7 +43,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uestcpg.remotedoctor.Bluetooth.common.logger.Log;
+import com.uestcpg.remotedoctor.Bluetooth.socket.SocketClientThread;
+
+import java.io.IOException;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import com.uestcpg.remotedoctor.R;
+
+import static com.uestcpg.remotedoctor.Bluetooth.StringHexUtils.Bytes2HexString;
+import static com.uestcpg.remotedoctor.Bluetooth.StringHexUtils.toHexString;
 
 /**
  * This fragment controls Bluetooth to communicate with other devices.
@@ -86,9 +98,11 @@ public class BluetoothChatFragment extends Fragment {
      * Member object for the chat services
      */
     private BluetoothChatService mChatService = null;
-//    private BluetoothChatService mChatServiceReserved = null;
 
-    private boolean isChatServiceConnected = false;
+    private SocketClientThread socket_client;
+    private BlockingQueue basket;
+    private ShareBuffer shareBuffer1;
+    private long ct;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,6 +117,8 @@ public class BluetoothChatFragment extends Fragment {
             Toast.makeText(activity, "Bluetooth is not available", Toast.LENGTH_LONG).show();
             activity.finish();
         }
+        basket = new LinkedBlockingQueue<byte[]>(100);
+        shareBuffer1 = new ShareBuffer();
     }
 
 
@@ -115,7 +131,6 @@ public class BluetoothChatFragment extends Fragment {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
             // Otherwise, setup the chat session
-//            && mChatServiceReserved == null
         } else if (mChatService == null) {
             setupChat();
         }
@@ -127,10 +142,9 @@ public class BluetoothChatFragment extends Fragment {
         if (mChatService != null) {
             mChatService.stop();
         }
-//        if (mChatServiceReserved!=null)
-//        {
-//            mChatServiceReserved.stop();
-//        }
+        if (socket_client != null){
+            socket_client.cancel();
+        }
     }
 
     @Override
@@ -147,13 +161,6 @@ public class BluetoothChatFragment extends Fragment {
                 mChatService.start();
             }
         }
-//        if (mChatServiceReserved != null) {
-//             Only if the state is STATE_NONE, do we know that we haven't started already
-//            if (mChatServiceReserved.getState() == BluetoothChatService.STATE_NONE) {
-                // Start the Bluetooth chat services
-//                mChatServiceReserved.start();
-//            }
-//        }
     }
 
     @Override
@@ -197,9 +204,9 @@ public class BluetoothChatFragment extends Fragment {
         });
 
         // Initialize the BluetoothChatService to perform bluetooth connections
-        mChatService = new BluetoothChatService(getActivity(), mHandler);
-//        mChatServiceReserved = new BluetoothChatService(getActivity(), mHandler);
+        mChatService = new BluetoothChatService(getActivity(), mHandler, basket, socket_client);
 
+        mChatService.initSharedBuffer(shareBuffer1);
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
     }
@@ -352,6 +359,16 @@ public class BluetoothChatFragment extends Fragment {
                                 Toast.LENGTH_SHORT).show();
                     }
                     break;
+                case Constants.RESTART:
+                    break;
+//                        Intent intent = new Intent(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
+//                        BluetoothDevice device = (BluetoothDevice)msg.obj;
+//                        intent.putExtra(BluetoothDevice.EXTRA_DEVICE, device.getName());
+//                        activity.sendBroadcast(intent);
+//
+//                        mChatService.connect(device, true);
+//                        connectDevice();
+
             }
         }
     };
@@ -391,22 +408,67 @@ public class BluetoothChatFragment extends Fragment {
      * @param data   An {@link Intent} with {@link DeviceListActivity#EXTRA_DEVICE_ADDRESS} extra.
      * @param secure Socket Security type - Secure (true) , Insecure (false)
      */
-    private void connectDevice(Intent data, boolean secure) {
+    private void connectDevice(Intent data, final boolean secure) {
         // Get the device MAC address
+        try {
+            //reader
+            socket_client = new SocketClientThread(basket, shareBuffer1);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        socket_client.start();
+
         String address = data.getExtras()
                 .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
         // Get the BluetoothDevice object
-        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+        final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         // Attempt to connect to the device
-//        if(!isChatServiceConnected){
-//            mChatService.connect(device, secure);
-//            isChatServiceConnected = true;
-//        }
-        mChatService.connect(device, secure);
-//        else{
-//            mChatServiceReserved.connect(device, secure);
-//        }
+
+//        mChatService.connect(device, secure);
+        Thread t = new Thread(new Runnable(){
+            public void run(){
+                while (true) {
+                    if (Auth.AUTH_SUCCESS) {
+                        mChatService.connect(device, secure);
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                try {
+                                    mChatService.mConnectedThread.cancel();
+                                    mChatService.mConnectedThread.Close();
+//                                    mChatService.mConnectedThread.close();
+                                    mChatService.mConnectedThread = null;
+                                    Auth.shareBuffer1.reset();
+                                    Auth.shareBuffer2.reset();
+                                    Thread.sleep(500);
+                                    mChatService.connect(device, secure);
+                                } catch (Exception e) {
+//                                    Log.e(TAG, " there is a exception disconnected", e);
+                                    //                    connectionLost();
+                                    //                        break;
+                                }
+                            }
+                        }, 10*1000, 80*1000);
+
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                if(mChatService.mConnectedThread == null)
+                                {
+                                    mChatService.connect(device, secure);
+                                }
+                            }
+                        }, 5*1000, 5*1000);
+                        break;
+                    }
+                }
+            }
+        });
+        t.start();
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
