@@ -6,7 +6,7 @@ package com.uestcpg.remotedoctor.network;
  */
 
 public class APPUrl {
-    private static final String SERVER_URL = "http://1750q5u152.iask.in:30038/RemoteDoctorServer/";
+    private static final String SERVER_URL = "http://39.108.146.238/RemoteDoctor/";
     public static final String REGISTER_URL = SERVER_URL+"register";  //注册地址
     public static final String LOGIN_URL = SERVER_URL+"login"; //登录地址
     public static final String GET_DOCTOR_URL = SERVER_URL+"getDoctor";//获得医生地址

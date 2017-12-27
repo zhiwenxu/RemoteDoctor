@@ -8,7 +8,6 @@ import com.uestcpg.remotedoctor.R;
 import com.uestcpg.remotedoctor.app.AppStatus;
 import com.uestcpg.remotedoctor.app.BaseFragmentActivity;
 import com.uestcpg.remotedoctor.beans.DoctorInfoBean;
-import com.uestcpg.remotedoctor.beans.SickInfoBean;
 import com.uestcpg.remotedoctor.network.APPUrl;
 import com.uestcpg.remotedoctor.network.GsonHelper;
 import com.uestcpg.remotedoctor.network.OkHttpCallBack;
@@ -18,6 +17,7 @@ import com.uestcpg.remotedoctor.utils.StringUtil;
 
 /**
  * Created by dmsoft on 2017/6/14.
+ *
  */
 
 public class ConversationActivity extends BaseFragmentActivity {
